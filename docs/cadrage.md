@@ -66,3 +66,15 @@ Les établissements d'enseignement supérieur en informatique (Écoles d'ingéni
 
 **La mission de ce premier outil :**
 *« Aider les équipes pédagogiques à gagner du temps et standardiser leurs évaluations grâce à l'analyse et la notation automatisée de l'architecture et santé des dépôts GitHub étudiants. »*
+
+---
+
+## 5. Elevator Pitch (US06)
+
+**Format court (à lire en moins de 45 secondes) :**
+
+> « Aujourd'hui, dans les écoles d'informatique, les professeurs perdent un temps précieux à vérifier manuellement la structure et l'architecture des dizaines de projets étudiants qu'ils doivent évaluer. 
+> 
+> **Toolbox-IT** est une plateforme éducative qui automatise l'analyse des dépôts de code de ces projets. 
+> 
+> Notre outil scanne instantanément les travaux pour vérifier s'ils respectent les standards attendus par l'école. Le bénéfice est immédiat : les correcteurs divisent par deux leur temps de vérification pour se concentrer sur la logique métier, et les étudiants bénéficient d'un retour continu pour s'améliorer avant le rendu final. »
