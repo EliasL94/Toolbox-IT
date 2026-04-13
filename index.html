@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toolbox-IT | Reviewer d'Architecture GitHub pour Écoles</title>
+    <meta name="description" content="Automatisez l'évaluation de l'architecture des projets GitHub de vos étudiants. Gagnez du temps et standardisez vos corrections.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <span class="icon">🛠️</span>
+                <span class="text">Toolbox-IT</span>
+            </div>
+            <ul>
+                <li><a href="#problem">Problème</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#usage">Usage</a></li>
+                <li><a href="#contact" class="btn-secondary">Connexion</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <h1>L'évaluation d'architecture GitHub, <span class="gradient-text">en mode pilotage automatique.</span></h1>
+                    <p class="lead">Le premier outil SaaS dédié aux écoles d'informatique pour scanner, analyser et noter la structure des projets étudiants en un clic.</p>
+                    <div class="cta-group">
+                        <a href="#contact" class="btn-primary">Essayer gratuitement</a>
+                        <a href="#solution" class="btn-outline">En savoir plus</a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <strong>-50%</strong>
+                            <span>Temps de correction</span>
+                        </div>
+                        <div class="stat">
+                            <strong>100%</strong>
+                            <span>Standardisation</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="glass-card mockup">
+                        <div class="mockup-header">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <div class="url-bar">toolbox-it.app/scan/project-x</div>
+                        </div>
+                        <div class="mockup-body">
+                            <div class="scan-line"></div>
+                            <pre><code><span class="comment">// Analyse en cours...</span>
+<span class="token-success">├── src/</span>
+<span class="token-success">│   ├── controllers/ [OK]</span>
+<span class="token-error">│   ├── services/ [MANQUANT]</span>
+<span class="token-success">├── tests/ [OK]</span>
+<span class="token-success">└── README.md [OK]</span>
+
+<span class="score-badge">Score : 84%</span></code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section id="problem" class="problem-section">
+            <div class="container">
+                <div class="section-badge">Le constat</div>
+                <h2>Pourquoi l'évaluation manuelle ralentit votre école ?</h2>
+                <div class="problem-grid">
+                    <div class="problem-card">
+                        <div class="problem-icon">⏳</div>
+                        <h3>Chronophage</h3>
+                        <p>Cloner, explorer et vérifier l'arborescence de 40 dépôts un par un est une tâche à faible valeur ajoutée pour un intervenant expert.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">⚖️</div>
+                        <h3>Subjectif</h3>
+                        <p>Difficile de garantir que tous les correcteurs appliquent la même rigueur sur le respect des dossiers imposés.</p>
+                    </div>
+                    <div class="problem-card">
+                        <div class="problem-icon">📉</div>
+                        <h3>Sans feedback</h3>
+                        <p>Les étudiants découvrent leurs erreurs d'architecture au moment de la note finale, trop tard pour apprendre.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Solution / Benefits Section -->
+        <section id="solution" class="solution-section">
+            <div class="container grid-2">
+                <div class="solution-image">
+                    <div class="image-placeholder main-bg">
+                        <!-- On pourrait mettre ici une image générée -->
+                        <div class="floating-icons">
+                            <div class="float icon-1">📁</div>
+                            <div class="float icon-2">✅</div>
+                            <div class="float icon-3">📊</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="solution-content">
+                    <div class="section-badge">La proposition de valeur</div>
+                    <h2>Un standard pour vos promos, un gain de temps pour vos profs.</h2>
+                    <ul class="benefit-list">
+                        <li>
+                            <div class="check">✔</div>
+                            <div>
+                                <strong>Templates sur-mesure</strong>
+                                <p>Définissez vos propres règles (MVC, Clean Archi) et appliquez-les à toute la promotion.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="check">✔</div>
+                            <div>
+                                <strong>Analyse instantanée</strong>
+                                <p>Scannez les dépôts GitHub via API sans avoir à les cloner en local.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="check">✔</div>
+                            <div>
+                                <strong>Pédagogie intégrée</strong>
+                                <p>Expliquez le "Pourquoi" derrière chaque erreur pour faire progresser vos étudiants.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Section -->
+        <section id="usage" class="usage-section">
+            <div class="container centered">
+                <div class="section-badge">Comment ça marche ?</div>
+                <h2>Trois étapes pour une correction sereine.</h2>
+                <div class="steps-grid">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Connectez GitHub</h3>
+                        <p>Liez votre organisation ou importez les URLs des projets étudiants.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Choisissez un Template</h3>
+                        <p>Sélectionnez les standards de structure imposés pour cet exercice.</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Exportez les Scores</h3>
+                        <p>Récupérez les rapports détaillés et pré-remplissez vos grilles de notation.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="contact" class="cta-section">
+            <div class="container cta-box">
+                <h2>Prêt à moderniser vos évaluations ?</h2>
+                <p>Rejoignez les écoles qui font déjà confiance à Toolbox-IT pour standardiser leurs rendus techniques.</p>
+                <form class="contact-form">
+                    <input type="email" placeholder="votre@ecole.fr" required>
+                    <button type="submit" class="btn-primary">Démarrer le test</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-brand">
+                <div class="logo">
+                    <span class="icon">🛠️</span>
+                    <span class="text">Toolbox-IT</span>
+                </div>
+                <p>L'outillage intelligent pour la pédagogie tech.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Produit</h4>
+                <ul>
+                    <li><a href="#">Le Reviewer</a></li>
+                    <li><a href="#">Templates</a></li>
+                    <li><a href="#">Tarifs</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Ressources</h4>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Clean Architecture</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom container">
+            <p>&copy; 2026 Toolbox-IT. Fait avec passion pour les futurs devs.</p>
+        </div>
+    </footer>
+</body>
+</html>
