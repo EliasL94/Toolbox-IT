@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Toolbox-IT | Teacher Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#717786",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#dae2fd",
+                    "primary-fixed-dim": "#adc6ff",
+                    "surface-container-high": "#e2e7ff",
+                    "outline-variant": "#c1c6d7",
+                    "surface-tint": "#005bc1",
+                    "primary": "#0058bc",
+                    "secondary-container": "#dae2fd",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-primary-fixed": "#001a41",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#f5fff6",
+                    "on-surface": "#131b2e",
+                    "primary-container": "#0070eb",
+                    "surface-dim": "#d2d9f4",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-tertiary-fixed": "#002113",
+                    "on-primary-container": "#fefcff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#00855b",
+                    "on-secondary-container": "#5c647a",
+                    "error-container": "#ffdad6",
+                    "on-background": "#131b2e",
+                    "secondary": "#565e74",
+                    "surface-container": "#eaedff",
+                    "surface": "#faf8ff",
+                    "primary-fixed": "#d8e2ff",
+                    "tertiary-fixed": "#6ffbbe",
+                    "background": "#faf8ff",
+                    "surface-container-low": "#f2f3ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#006947",
+                    "inverse-surface": "#283044",
+                    "inverse-on-surface": "#eef0ff",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#faf8ff",
+                    "surface-variant": "#dae2fd",
+                    "on-surface-variant": "#414755",
+                    "on-primary-fixed-variant": "#004493",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#dae2fd",
+                    "inverse-primary": "#adc6ff",
+                    "on-secondary-fixed": "#131b2e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.75rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; letter-spacing: -0.01em; }
+        .tight-tracking { letter-spacing: -0.02em; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface flex min-h-screen">
+<!-- SideNavBar (The Structural Anchor) -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-[#283044] flex flex-col py-6 z-50">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold text-white tracking-tight">Toolbox-IT</h1>
+<p class="text-xs text-slate-400 font-label uppercase tracking-widest mt-1">Educational Workspace</p>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-medium text-sm tracking-wide">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-white border-l-4 border-blue-600 bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-medium text-sm tracking-wide">Classes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-medium text-sm tracking-wide">Templates</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-medium text-sm tracking-wide">AI Assistant</span>
+</a>
+</nav>
+<div class="px-2 mt-auto pt-6 border-t border-white/10 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-medium text-sm tracking-wide">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-medium text-sm tracking-wide">Support</span>
+</a>
+<div class="mt-6 px-4 py-4 flex items-center gap-3 bg-white/5 rounded-xl">
+<img alt="User" class="w-10 h-10 rounded-full border border-white/10" data-alt="professional headshot of a teacher in a modern workspace, soft lighting, minimalist background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbPqe_1NS_XE3s41ugBFZLSnsi9N_qQGjfaiefAp3NrYRXT7Qx2KGJLedeyPOmkvRHwnVoD9NbjZQlFdLQ2yWeYfpuflMISJ3KTjrFo1-YeoxFHZhBLMTzjQVAl9ZHGUWzN7V7SiRolXc7twxx7lGBaYPVV4S5J7nBr1hZOda-h1cXBxwxFjj_sgzcqv1pwIIh4kHHRjc__vq01You7ccLwpLRPEZK8OWeTcbg1JW4OYwM0A05OG2sWgR6NOzQ3mPgpL8ehB54ALbj"/>
+<div>
+<p class="text-xs font-bold text-white">Prof. Richards</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-widest">Administrator</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 flex flex-col">
+<!-- Header Utility Bar -->
+<header class="h-20 flex items-center justify-between px-10 bg-surface/80 backdrop-blur-md sticky top-0 z-40">
+<div>
+<h2 class="text-2xl font-extrabold text-on-surface tight-tracking">Class Overview</h2>
+<p class="text-sm text-on-surface-variant">Computer Science 301: Advanced Architecture</p>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 text-on-surface-variant bg-surface-container-low px-4 py-2 rounded-lg">
+<span class="material-symbols-outlined text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm placeholder:text-outline p-0 w-48" placeholder="Search students..." type="text"/>
+</div>
+<button class="flex items-center gap-2 bg-gradient-to-br from-primary to-primary-container text-white px-5 py-2.5 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span>Scan New Repository</span>
+</button>
+</div>
+</header>
+<!-- Content Body -->
+<div class="p-10 space-y-10">
+<!-- Analytics Summary (Asymmetric Grid) -->
+<section class="grid grid-cols-12 gap-6">
+<div class="col-span-8 bg-surface-container-lowest p-8 rounded-xl shadow-sm border border-outline-variant/10">
+<div class="flex justify-between items-end mb-8">
+<div>
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-[0.15em] mb-1">Performance Trend</p>
+<h3 class="text-lg font-bold text-on-surface">Repository Health Index</h3>
+</div>
+<div class="flex gap-4 text-xs font-semibold">
+<span class="flex items-center gap-1 text-tertiary"><span class="w-2 h-2 rounded-full bg-tertiary"></span> Quality</span>
+<span class="flex items-center gap-1 text-primary"><span class="w-2 h-2 rounded-full bg-primary"></span> Architecture</span>
+</div>
+</div>
+<div class="h-40 flex items-end gap-2 px-2">
+<!-- Mock Chart Columns -->
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-24 hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-32 hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-20 hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-28 hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-primary rounded-t-lg relative group h-36"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-16 hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-24 hover:bg-primary-fixed transition-colors"></div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-32 hover:bg-primary-fixed transition-colors"></div>
+</div>
+</div>
+<div class="col-span-4 flex flex-col gap-6">
+<div class="flex-1 bg-inverse-surface p-6 rounded-xl flex flex-col justify-between">
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl" data-icon="verified">verified</span>
+<div>
+<p class="text-3xl font-black text-white leading-none">84%</p>
+<p class="text-xs text-slate-400 font-medium mt-2">Overall Pass Rate</p>
+</div>
+</div>
+<div class="flex-1 bg-surface-container-high p-6 rounded-xl flex flex-col justify-between">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="bug_report">bug_report</span>
+<div>
+<p class="text-3xl font-black text-on-surface leading-none">12</p>
+<p class="text-xs text-on-surface-variant font-medium mt-2">Critical Security Issues</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Data Table Container -->
+<section class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/15">
+<th class="px-8 py-5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Student Name</th>
+<th class="px-6 py-5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Repository Link</th>
+<th class="px-6 py-5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest text-center">Architecture Score</th>
+<th class="px-6 py-5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Code Quality</th>
+<th class="px-6 py-5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">Status</th>
+<th class="px-8 py-5 text-[10px] font-bold text-on-surface-variant uppercase tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-bold text-sm">JS</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Jordan Smith</p>
+<p class="text-[10px] text-on-surface-variant">Last commit 2h ago</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<a class="text-sm text-primary font-medium flex items-center gap-1 hover:underline" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+                                    jsmith/final-project-v2
+                                </a>
+</td>
+<td class="px-6 py-5">
+<div class="relative flex items-center justify-center">
+<!-- Circular Progress SVG -->
+<svg class="w-12 h-12 transform -rotate-90">
+<circle class="text-surface-container-high" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-tertiary" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="12.5" stroke-width="4"></circle>
+</svg>
+<span class="absolute text-[10px] font-black text-on-surface">90%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="w-full max-w-[120px]">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-on-surface">82/100</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 82%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-tertiary/10 text-tertiary border border-tertiary/20">
+                                    PASSED
+                                </span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold text-sm">AL</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Alex Liao</p>
+<p class="text-[10px] text-on-surface-variant">Last commit 5h ago</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<a class="text-sm text-primary font-medium flex items-center gap-1 hover:underline" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+                                    al-dev/microservices-demo
+                                </a>
+</td>
+<td class="px-6 py-5">
+<div class="relative flex items-center justify-center">
+<svg class="w-12 h-12 transform -rotate-90">
+<circle class="text-surface-container-high" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="62.8" stroke-width="4"></circle>
+</svg>
+<span class="absolute text-[10px] font-black text-on-surface">50%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="w-full max-w-[120px]">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-on-surface">45/100</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-primary-container/10 text-primary-container border border-primary-container/20">
+                                    NEEDS REVIEW
+                                </span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-bright transition-colors group">
+<td class="px-8 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-secondary-container font-bold text-sm">ER</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Elena Rodriguez</p>
+<p class="text-[10px] text-on-surface-variant">Last commit 1d ago</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<a class="text-sm text-primary font-medium flex items-center gap-1 hover:underline" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="link">link</span>
+                                    er-codes/distributed-node
+                                </a>
+</td>
+<td class="px-6 py-5">
+<div class="relative flex items-center justify-center">
+<svg class="w-12 h-12 transform -rotate-90">
+<circle class="text-surface-container-high" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-error" cx="24" cy="24" fill="transparent" r="20" stroke="currentColor" stroke-dasharray="125.6" stroke-dashoffset="100.5" stroke-width="4"></circle>
+</svg>
+<span class="absolute text-[10px] font-black text-on-surface">20%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="w-full max-w-[120px]">
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-on-surface">15/100</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold bg-error/10 text-error border border-error/20">
+                                    FAILED
+                                </span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="px-8 py-4 bg-surface-container-low/50 flex justify-between items-center">
+<p class="text-xs text-on-surface-variant font-medium">Showing 3 of 42 students</p>
+<div class="flex gap-2">
+<button class="p-1.5 rounded bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-1.5 rounded bg-surface-container-lowest border border-outline-variant/30 text-on-surface-variant hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="mt-auto flex flex-col md:flex-row justify-between items-center px-10 py-8 gap-4 border-t border-outline-variant/15">
+<p class="font-label text-xs uppercase tracking-widest text-slate-500">© 2024 Toolbox-IT. All rights reserved.</p>
+<div class="flex gap-8">
+<a class="font-label text-xs uppercase tracking-widest text-slate-500 hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-label text-xs uppercase tracking-widest text-slate-500 hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-label text-xs uppercase tracking-widest text-slate-500 hover:text-on-surface transition-colors" href="#">Contact</a>
+</div>
+</footer>
+</main>
+</body></html>

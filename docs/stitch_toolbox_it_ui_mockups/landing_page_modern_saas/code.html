@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Toolbox-IT | Elevate your Code</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#717786",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#dae2fd",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-high": "#e2e7ff",
+                        "outline-variant": "#c1c6d7",
+                        "surface-tint": "#005bc1",
+                        "primary": "#0058bc",
+                        "secondary-container": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-primary-fixed": "#001a41",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-container": "#f5fff6",
+                        "on-surface": "#131b2e",
+                        "primary-container": "#0070eb",
+                        "surface-dim": "#d2d9f4",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-tertiary-fixed": "#002113",
+                        "on-primary-container": "#fefcff",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#00855b",
+                        "on-secondary-container": "#5c647a",
+                        "error-container": "#ffdad6",
+                        "on-background": "#131b2e",
+                        "secondary": "#565e74",
+                        "surface-container": "#eaedff",
+                        "surface": "#faf8ff",
+                        "primary-fixed": "#d8e2ff",
+                        "tertiary-fixed": "#6ffbbe",
+                        "background": "#faf8ff",
+                        "surface-container-low": "#f2f3ff",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#006947",
+                        "inverse-surface": "#283044",
+                        "inverse-on-surface": "#eef0ff",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "surface-variant": "#dae2fd",
+                        "on-surface-variant": "#414755",
+                        "on-primary-fixed-variant": "#004493",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#dae2fd",
+                        "inverse-primary": "#adc6ff",
+                        "on-secondary-fixed": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #0058bc 0%, #0070eb 100%);
+        }
+        .tight-tracking { letter-spacing: -0.02em; }
+        .label-tracking { letter-spacing: 0.05em; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm dark:shadow-none flex justify-between items-center px-8 h-16 max-w-full mx-auto">
+<div class="text-2xl font-black tracking-tighter text-slate-900 dark:text-slate-50">Toolbox-IT</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Platform</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Pricing</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Resources</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium hover:text-blue-500 transition-colors duration-200" href="#">Company</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary hover:bg-primary-container text-white px-6 py-2 rounded-xl font-semibold scale-95 active:scale-90 transition-all">Get Started</button>
+</div>
+</nav>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center overflow-hidden bg-surface">
+<div class="container mx-auto px-8 grid lg:grid-cols-2 gap-12 items-center">
+<div class="z-10">
+<span class="inline-block py-1 px-3 rounded-full bg-surface-container-high text-primary font-bold text-xs uppercase tracking-widest mb-6">Automated Code Review v2.0</span>
+<h1 class="text-6xl md:text-7xl font-black text-on-surface tight-tracking leading-[1.1] mb-6">
+                        Elevate your Code, <br/>
+<span class="text-primary">Master your Architecture.</span>
+</h1>
+<p class="text-xl text-on-surface-variant leading-relaxed mb-10 max-w-xl">
+                        The all-in-one suite to analyze, review, and design student IT projects automatically. Turn chaos into clean code with architectural precision.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="hero-gradient text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-primary/20 transition-all active:scale-95">
+                            Get Started
+                        </button>
+<button class="flex items-center justify-center gap-2 px-8 py-4 rounded-xl border border-outline-variant/20 font-bold text-lg text-on-surface hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined">play_circle</span>
+                            Watch Demo
+                        </button>
+</div>
+<div class="mt-12 flex items-center gap-6">
+<div class="flex -space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-surface" data-alt="professional portrait of a tech lead with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBL4EQUL0YXLQ4-C_CEhmpfpZ9WexcmXJKZgRMuy9LaCZUZhpNJcLTOiflnPp3E3Z2DOypBilRnLed-VMoBXyFk0Tb2E0i8DyPNeIEYkrpTAguYtX-5Z1qM-vGTuo4up7Uzj8BwSQiOs1P9EcQHH1c4cw7tb6nCvBsndaL-NLU55uRtjWNReJ0S4yIRdcwxo5Xij5NKOr_nbUCLLLNelX0JmEpxAGA2yI6x9gX47Q3qc7OdNhTUtVsw4Hg4LTGfCUDBkuBXbuqV9trV"/>
+<img class="w-10 h-10 rounded-full border-2 border-surface" data-alt="portrait of a software engineer in a modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrT_zwXfVTH66hVM85iNe7XdvX5JDpJnpAYgZnLOEv-b8TiWU7CNR0uhCNYix07_fFrSpp-nli4QZRZfyIJXVw5md_ei2G-WPILbxmVuBMWtaYPamx9bVeYE4xXmxdX9sJw2Pp88YlVRooaR5PZ1HpfvO2F9tDJN7wcCFnCDoQKBs6t6f1W5V02z9yC1XFLlK7jwdneO4xJo4VwHD8cmUSlexIy46IE-2kVlp9TcQFCNakbK_F7DATVjikwiitz7FdSD5kEb4WdLBj"/>
+<img class="w-10 h-10 rounded-full border-2 border-surface" data-alt="smiling female developer looking at the camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcik59saPZ5GvK3I-oAgzgtZEEsxGMUpVN1POpb4ECRm63d1ZNdGOwlWbEFoD45Ky-cwXWLszwuIJ6ICzt3riytAhFLgpPrfPVp7iBACeeOi6GbkkmosiWuynE0suDBt4PIGwX_lMBChiejuQ6_JO2lRRS7NYTCL8JvTdG9uYuLsW4qgp17ZebSWB32gYdPLXo0_VKupcVMQGrG_sgUj3WFz2Nl0E-XsLWoWUg4YjL5PRGWjA49tSoAA93k9psdZhylBTjC00XlLGd"/>
+</div>
+<p class="text-sm text-on-surface-variant font-medium">Trusted by <span class="text-on-surface font-bold">500+</span> Universities worldwide</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -top-20 -right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-20 -left-20 w-72 h-72 bg-tertiary/10 rounded-full blur-3xl"></div>
+<!-- Hero Visual: Abstract Mockup -->
+<div class="relative glass rounded-[2rem] p-4 shadow-2xl border border-white/40">
+<div class="bg-inverse-surface rounded-[1.5rem] overflow-hidden aspect-[4/3] relative">
+<img class="w-full h-full object-cover opacity-60" data-alt="Modern isometric 3D code editor interface with glowing status indicators showing passing and failing unit tests" src=""/>
+<!-- Overlay Glass Cards -->
+<div class="absolute top-8 right-8 glass p-4 rounded-xl shadow-xl w-48 border border-white/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary text-sm">check_circle</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Security Audit</span>
+</div>
+<div class="h-2 w-full bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[94%]"></div>
+</div>
+<p class="text-xs mt-2 font-bold text-on-surface">94% Compliant</p>
+</div>
+<div class="absolute bottom-8 left-8 glass p-4 rounded-xl shadow-xl w-56 border border-white/20">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant">Class Dependency</span>
+</div>
+<div class="grid grid-cols-4 gap-1 h-12 items-end">
+<div class="bg-primary/40 h-6 rounded-sm"></div>
+<div class="bg-primary/60 h-10 rounded-sm"></div>
+<div class="bg-primary h-12 rounded-sm"></div>
+<div class="bg-primary/30 h-8 rounded-sm"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Bento Grid -->
+<section class="py-24 bg-surface-container-low">
+<div class="container mx-auto px-8">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-black text-on-surface tight-tracking mb-4">Engineered for Perfection</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Stop manual grading. Start providing architectural feedback that actually helps students learn.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-6">
+<!-- Feature 1: Main Large -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-[2rem] p-10 flex flex-col justify-between shadow-sm hover:shadow-md transition-all">
+<div>
+<div class="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center text-primary mb-8">
+<span class="material-symbols-outlined text-3xl">architecture</span>
+</div>
+<h3 class="text-2xl font-bold text-on-surface mb-4">Structural Deep-Dive</h3>
+<p class="text-on-surface-variant leading-relaxed max-w-md">Our AI doesn't just look for bugs; it understands the design patterns. Detect God-classes, circular dependencies, and violations of SOLID principles instantly.</p>
+</div>
+<div class="mt-12 flex gap-4 overflow-hidden grayscale opacity-50">
+<!-- Visual placeholder for architectural graph -->
+<div class="flex-1 h-32 border border-outline-variant/30 rounded-xl border-dashed"></div>
+<div class="flex-1 h-32 border border-outline-variant/30 rounded-xl border-dashed"></div>
+</div>
+</div>
+<!-- Feature 2 -->
+<div class="bg-inverse-surface rounded-[2rem] p-10 text-white flex flex-col shadow-xl">
+<div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center text-white mb-8">
+<span class="material-symbols-outlined text-3xl">speed</span>
+</div>
+<h3 class="text-2xl font-bold mb-4">Instant Feedback</h3>
+<p class="text-slate-400 leading-relaxed">Students receive automated reviews as soon as they push to GitHub. Immediate feedback loops lead to better learning outcomes.</p>
+<div class="mt-auto pt-8">
+<span class="text-blue-400 font-bold text-sm tracking-widest uppercase flex items-center gap-2">
+                                Learn More <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</span>
+</div>
+</div>
+<!-- Feature 3 -->
+<div class="bg-surface-container-lowest rounded-[2rem] p-10 flex flex-col shadow-sm">
+<div class="w-14 h-14 bg-tertiary/10 rounded-2xl flex items-center justify-center text-tertiary mb-8">
+<span class="material-symbols-outlined text-3xl">smart_toy</span>
+</div>
+<h3 class="text-2xl font-bold text-on-surface mb-4">AI Assistant</h3>
+<p class="text-on-surface-variant leading-relaxed">Integrated guidance that explains *why* a certain architecture choice is suboptimal, teaching students best practices.</p>
+</div>
+<!-- Feature 4 -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-[2rem] p-10 shadow-sm relative overflow-hidden group">
+<div class="flex flex-col md:flex-row items-center gap-10">
+<div class="flex-1">
+<h3 class="text-2xl font-bold text-on-surface mb-4">Enterprise Grade Security</h3>
+<p class="text-on-surface-variant leading-relaxed">We verify code against OWASP standards and industry-leading security practices automatically. No more leaked credentials or injection vulnerabilities in student labs.</p>
+</div>
+<div class="flex-1 w-full">
+<img class="rounded-2xl shadow-lg group-hover:scale-105 transition-transform duration-500" data-alt="Close-up of a high-tech security server with glowing green lights in a dark data center" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlQl-6Y_IeCII089cn77JZDjgB3oPwCImiex6ZRmiTChWQhisu_IEG_VXL7AKXYeah7eKCVjSBw3TDi_843snHUhDN3PzMnIJ48wkWX4BYuI0N3v5CAqA0X-Z_YXKA4HTCVRRlvbFOCDZnqQa2hdv1_uzluFoceePUrUylUh1-lOiGAcINJqJK_JxoCyrcbKTG3p3bFCQSj4ZNP2wCEy7oJWUWxve6AJ661t0dUnAMzkVj0OIXJmE9gtmgsC5WYC5Xln6WO0QUAKaU"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tonal Shift Section -->
+<section class="py-24 bg-inverse-surface text-white">
+<div class="container mx-auto px-8 grid md:grid-cols-2 gap-20 items-center">
+<div class="relative rounded-[2rem] overflow-hidden">
+<img class="w-full h-auto" data-alt="A diverse team of software engineers collaborating around a large monitor in a brightly lit modern office" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhYpHxxtt4X_sReD6fj8ZD2UaCSnIDYjyMbWb5hmArxJcWbEHRECTCsYwa2luGYmzGFfeU3qcpghM36x4dHZsOZ9rXsI_XzJZ-B9EiyNSvpHsYMvVgKeRfmBfSKrtipM_7x4M2ANsloVN-gkYpEhsu1BwqwVis4gvkQutZwnM59-XdYsoyLxyU-N9pxDXqiw6pao56eot9OrJwWkfayhCMTxyQeDRpjwggJoK9k1cLxrVe3K23gbemdgtSsgWwc1-JbLrLZYI-exbD"/>
+<div class="absolute inset-0 bg-primary/20 mix-blend-multiply"></div>
+</div>
+<div>
+<h2 class="text-4xl font-black tight-tracking mb-8 leading-tight">Scale your IT curriculum without scaling your workforce.</h2>
+<div class="space-y-8">
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined">groups</span>
+</div>
+<div>
+<h4 class="text-xl font-bold mb-2">Team Collaboration</h4>
+<p class="text-slate-400">Share grading rubrics and architectural standards across your entire faculty effortlessly.</p>
+</div>
+</div>
+<div class="flex gap-6">
+<div class="flex-shrink-0 w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined">data_exploration</span>
+</div>
+<div>
+<h4 class="text-xl font-bold mb-2">Performance Analytics</h4>
+<p class="text-slate-400">Identify which students are struggling with specific concepts like recursion or polymorphism before it's too late.</p>
+</div>
+</div>
+</div>
+<button class="mt-12 bg-white text-inverse-surface px-8 py-4 rounded-xl font-bold hover:bg-slate-200 transition-all">
+                        Schedule a Demo
+                    </button>
+</div>
+</div>
+</section>
+<!-- Simple CTA -->
+<section class="py-24 bg-surface overflow-hidden relative">
+<div class="container mx-auto px-8 text-center relative z-10">
+<h2 class="text-5xl font-black text-on-surface tight-tracking mb-8">Ready to transform your IT workspace?</h2>
+<p class="text-on-surface-variant text-xl mb-12 max-w-2xl mx-auto">Join the future of automated code review and architectural analysis. No credit card required to start.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-6">
+<button class="bg-primary text-white px-10 py-5 rounded-xl font-bold text-xl shadow-xl hover:bg-primary-container transition-all">Get Started for Free</button>
+<button class="bg-surface-container-high text-on-surface px-10 py-5 rounded-xl font-bold text-xl hover:bg-surface-container-highest transition-all">View Documentation</button>
+</div>
+</div>
+<!-- Background element -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-5 pointer-events-none">
+<span class="material-symbols-outlined text-[40rem]">code</span>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-col md:flex-row justify-between items-center px-8 py-12 gap-4">
+<div class="flex flex-col items-center md:items-start gap-2">
+<span class="text-2xl font-black tracking-tighter text-slate-900 dark:text-slate-50 mb-2">Toolbox-IT</span>
+<p class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500">© 2024 Toolbox-IT. All rights reserved.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 opacity-80 hover:opacity-100 transition-all" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 opacity-80 hover:opacity-100 transition-all" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500 hover:text-slate-900 dark:hover:text-slate-200 opacity-80 hover:opacity-100 transition-all" href="#">Contact</a>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-slate-400 hover:text-primary cursor-pointer">public</span>
+<span class="material-symbols-outlined text-slate-400 hover:text-primary cursor-pointer">alternate_email</span>
+</div>
+</footer>
+</body></html>

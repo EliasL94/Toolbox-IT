@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Toolbox-IT | Repository Detail View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+        }
+        .tight-tracking {
+            letter-spacing: -0.02em;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c1c6d7;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#717786",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#dae2fd",
+                    "primary-fixed-dim": "#adc6ff",
+                    "surface-container-high": "#e2e7ff",
+                    "outline-variant": "#c1c6d7",
+                    "surface-tint": "#005bc1",
+                    "primary": "#0058bc",
+                    "secondary-container": "#dae2fd",
+                    "on-tertiary-fixed-variant": "#005236",
+                    "on-primary-fixed": "#001a41",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#f5fff6",
+                    "on-surface": "#131b2e",
+                    "primary-container": "#0070eb",
+                    "surface-dim": "#d2d9f4",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-tertiary-fixed": "#002113",
+                    "on-primary-container": "#fefcff",
+                    "tertiary-fixed-dim": "#4edea3",
+                    "error": "#ba1a1a",
+                    "tertiary-container": "#00855b",
+                    "on-secondary-container": "#5c647a",
+                    "error-container": "#ffdad6",
+                    "on-background": "#131b2e",
+                    "secondary": "#565e74",
+                    "surface-container": "#eaedff",
+                    "surface": "#faf8ff",
+                    "primary-fixed": "#d8e2ff",
+                    "tertiary-fixed": "#6ffbbe",
+                    "background": "#faf8ff",
+                    "surface-container-low": "#f2f3ff",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "tertiary": "#006947",
+                    "inverse-surface": "#283044",
+                    "inverse-on-surface": "#eef0ff",
+                    "on-primary": "#ffffff",
+                    "surface-bright": "#faf8ff",
+                    "surface-variant": "#dae2fd",
+                    "on-surface-variant": "#414755",
+                    "on-primary-fixed-variant": "#004493",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#dae2fd",
+                    "inverse-primary": "#adc6ff",
+                    "on-secondary-fixed": "#131b2e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.75rem",
+                    "full": "0.75rem"
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-surface text-on-surface min-h-screen flex">
+<!-- SideNavBar Anchor -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-[#283044] flex flex-col py-6 z-50">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold text-white tracking-tight">Toolbox-IT</h1>
+<p class="text-xs text-slate-400 mt-1 uppercase tracking-widest">Educational Workspace</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-['Inter'] text-sm tracking-wide">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-white border-l-4 border-blue-600 bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+<span class="font-['Inter'] text-sm tracking-wide">Classes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-['Inter'] text-sm tracking-wide">Templates</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-['Inter'] text-sm tracking-wide">AI Assistant</span>
+</a>
+</nav>
+<div class="mt-auto space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Inter'] text-sm tracking-wide">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/10 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-['Inter'] text-sm tracking-wide">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-1 flex flex-col min-h-screen">
+<!-- Header / Top Section -->
+<header class="h-16 flex justify-between items-center px-8 bg-slate-50/80 backdrop-blur-md sticky top-0 z-40 border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="folder_zip">folder_zip</span>
+<h2 class="text-lg font-bold tracking-tight text-on-surface">toolbox-it-core-api / <span class="text-primary">main</span></h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-low rounded-full">
+<div class="w-2 h-2 rounded-full bg-tertiary"></div>
+<span class="text-xs font-semibold text-on-surface-variant">Clean Architecture Detected</span>
+</div>
+<button class="bg-primary text-white px-4 py-1.5 rounded-xl text-sm font-semibold hover:bg-primary-container transition-colors">
+                    Analyze Project
+                </button>
+</div>
+</header>
+<div class="p-8 space-y-8 max-w-[1600px] mx-auto w-full">
+<!-- Project Score & Metadata (Bento-style Header) -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="md:col-span-1 bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15 flex flex-col justify-center">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2">Project Health</span>
+<div class="flex items-baseline gap-2">
+<span class="text-5xl font-black text-on-surface tight-tracking">84</span>
+<span class="text-on-surface-variant font-medium">/100</span>
+</div>
+<div class="w-full bg-surface-container-low h-1.5 rounded-full mt-4 overflow-hidden">
+<div class="bg-primary h-full w-[84%]"></div>
+</div>
+</div>
+<div class="md:col-span-3 grid grid-cols-3 gap-6">
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="bug_report">bug_report</span>
+<span class="text-sm font-bold text-on-surface uppercase tracking-tight">Security</span>
+</div>
+<p class="text-2xl font-bold text-on-surface">0 Vulnerabilities</p>
+<p class="text-xs text-on-surface-variant mt-1">Snyk scan: Passed 2m ago</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="speed">speed</span>
+<span class="text-sm font-bold text-on-surface uppercase tracking-tight">CI/CD Flow</span>
+</div>
+<p class="text-2xl font-bold text-on-surface">98.2% Success</p>
+<p class="text-xs text-on-surface-variant mt-1">Average build time: 4m 12s</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/15">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-error" data-icon="rule">rule</span>
+<span class="text-sm font-bold text-on-surface uppercase tracking-tight">Compliance</span>
+</div>
+<p class="text-2xl font-bold text-error">3 Gaps Found</p>
+<p class="text-xs text-on-surface-variant mt-1">Infrastructure drift detected</p>
+</div>
+</div>
+</section>
+<!-- Main Interactive Area -->
+<section class="grid grid-cols-12 gap-8 items-start">
+<!-- Left Panel: File Tree -->
+<div class="col-span-4 bg-surface-container-lowest rounded-xl border border-outline-variant/15 overflow-hidden flex flex-col h-[700px]">
+<div class="p-4 bg-surface-container-low flex justify-between items-center">
+<span class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">File Explorer</span>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-sm cursor-pointer" data-icon="create_new_folder">create_new_folder</span>
+<span class="material-symbols-outlined text-sm cursor-pointer" data-icon="refresh">refresh</span>
+</div>
+</div>
+<div class="p-6 overflow-y-auto space-y-2 text-sm font-medium">
+<div class="flex items-center gap-3 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-amber-500" data-icon="folder">folder</span>
+<span>src/</span>
+</div>
+<div class="ml-6 space-y-2">
+<div class="flex items-center gap-3 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-amber-500" data-icon="folder">folder</span>
+<span>controllers/</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-amber-500" data-icon="folder">folder</span>
+<span>models/</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-amber-500" data-icon="folder">folder</span>
+<span>views/</span>
+</div>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-blue-400" data-icon="description">description</span>
+<span>package.json</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-blue-400" data-icon="description">description</span>
+<span>README.md</span>
+</div>
+<!-- Missing File Highlight -->
+<div class="flex items-center justify-between gap-3 bg-error/5 border-l-4 border-error py-2 px-3 rounded-r-lg">
+<div class="flex items-center gap-3 text-error">
+<span class="material-symbols-outlined" data-icon="error">error</span>
+<span>Missing Dockerfile</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-error px-1.5 py-0.5 bg-error/10 rounded">Critical</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant py-1">
+<span class="material-symbols-outlined text-amber-500" data-icon="folder">folder</span>
+<span>tests/</span>
+</div>
+<!-- Incorrect Folder Highlighting -->
+<div class="flex items-center justify-between gap-3 bg-error/5 border-l-4 border-error py-2 px-3 rounded-r-lg">
+<div class="flex items-center gap-3 text-error">
+<span class="material-symbols-outlined" data-icon="folder_off">folder_off</span>
+<span>Legacy-assets/</span>
+</div>
+<span class="text-[10px] font-bold uppercase text-error px-1.5 py-0.5 bg-error/10 rounded">Incorrect</span>
+</div>
+</div>
+</div>
+<!-- Right Panel: IA Architecte Chat -->
+<div class="col-span-8 bg-inverse-surface rounded-xl flex flex-col h-[700px] overflow-hidden">
+<!-- Chat Header -->
+<div class="px-6 py-4 bg-white/5 flex justify-between items-center border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-white tracking-tight">IA Architecte</h3>
+<p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Premium Logic Core</p>
+</div>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white" data-icon="settings_suggest">settings_suggest</span>
+<span class="material-symbols-outlined text-slate-400 cursor-pointer hover:text-white" data-icon="close">close</span>
+</div>
+</div>
+<!-- Chat History -->
+<div class="flex-1 overflow-y-auto p-6 space-y-8">
+<!-- User Message -->
+<div class="flex flex-col items-end">
+<div class="bg-white/10 text-white p-4 rounded-xl rounded-tr-none max-w-[80%] text-sm leading-relaxed">
+                                Our current project structure is failing the MVC linting rules. Can you analyze the controllers and suggest a more decoupled architecture?
+                            </div>
+<span class="text-[10px] text-slate-500 mt-2 font-bold uppercase">You • 10:42 AM</span>
+</div>
+<!-- AI Response -->
+<div class="flex flex-col items-start">
+<div class="flex gap-3 max-w-[90%]">
+<div class="shrink-0 w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-lg" data-icon="smart_toy">smart_toy</span>
+</div>
+<div class="space-y-4">
+<div class="bg-blue-600/10 border border-blue-500/20 text-slate-200 p-4 rounded-xl rounded-tl-none text-sm leading-relaxed">
+                                        I've analyzed your <code class="text-blue-400">src/controllers/</code>. You are currently handling database persistence directly within the route handlers. I recommend introducing a <strong class="text-white">Repository Pattern</strong> to decouple your business logic from the ORM.
+                                    </div>
+<!-- Code Snippet -->
+<div class="bg-[#1a1f2e] rounded-lg overflow-hidden border border-white/5">
+<div class="px-4 py-2 bg-white/5 flex justify-between items-center border-b border-white/5">
+<span class="text-[10px] text-slate-400 font-mono uppercase">proposed_refactor.ts</span>
+<span class="material-symbols-outlined text-sm text-slate-500 cursor-pointer hover:text-white" data-icon="content_copy">content_copy</span>
+</div>
+<div class="p-4 font-mono text-[13px] leading-6 overflow-x-auto">
+<div class="text-purple-400">interface <span class="text-blue-300">IUserRepository</span> {</div>
+<div class="pl-4 text-slate-300"> <span class="text-blue-300">findById</span>(id: <span class="text-amber-200">string</span>): <span class="text-amber-200">Promise&lt;User | null&gt;</span>;</div>
+<div class="text-purple-400">}</div>
+<div class="mt-2 text-slate-400">// Move persistence out of controller</div>
+<div class="text-purple-400">export class <span class="text-blue-300">UserController</span> {</div>
+<div class="pl-4 text-slate-300"> <span class="text-purple-400">constructor</span>(<span class="text-purple-400">private</span> repository: <span class="text-blue-300">IUserRepository</span>) {}</div>
+<div class="text-purple-400">}</div>
+</div>
+</div>
+<div class="bg-blue-600/10 border border-blue-500/20 text-slate-200 p-4 rounded-xl text-sm leading-relaxed">
+                                        Applying this change will fix the 2 compliance gaps in your <code class="text-error">Infrastructure</code> score. Would you like me to generate the repository boilerplate?
+                                    </div>
+</div>
+</div>
+<span class="text-[10px] text-slate-500 mt-2 ml-11 font-bold uppercase">IA Architecte • 10:43 AM</span>
+</div>
+</div>
+<!-- Chat Input -->
+<div class="p-6 bg-white/5 border-t border-white/10">
+<div class="relative">
+<input class="w-full bg-[#1a1f2e] border-none rounded-xl py-4 pl-4 pr-16 text-sm text-white placeholder-slate-500 focus:ring-2 focus:ring-primary" placeholder="Ask IA Architecte to refactor, fix, or analyze..." type="text"/>
+<button class="absolute right-3 top-2.5 bg-primary p-2 rounded-lg text-white hover:bg-primary-container transition-transform active:scale-90">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Anchor -->
+<footer class="mt-auto w-full border-t border-slate-200 flex flex-col md:flex-row justify-between items-center px-8 py-8 gap-4 bg-slate-50">
+<span class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500">© 2024 Toolbox-IT. All rights reserved.</span>
+<div class="flex gap-8">
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500 hover:text-on-surface transition-colors" href="#">Privacy Policy</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500 hover:text-on-surface transition-colors" href="#">Terms of Service</a>
+<a class="font-['Inter'] text-xs uppercase tracking-widest text-slate-500 hover:text-on-surface transition-colors" href="#">Contact</a>
+</div>
+</footer>
+</main>
+</body></html>

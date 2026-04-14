@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Toolbox-IT | Elevate your Code</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+        }
+        .mesh-gradient {
+            background-color: #f9f9fb;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 88, 188, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(138, 43, 185, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(103, 247, 213, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(0, 88, 188, 0.1) 0px, transparent 50%);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #1a1c1d 0%, #0058bc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#0058bc",
+                        "surface-tint": "#005bc1",
+                        "on-primary-fixed": "#001a41",
+                        "on-tertiary-fixed-variant": "#7201a2",
+                        "secondary-container": "#67f7d5",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-container-highest": "#e2e2e4",
+                        "on-error-container": "#93000a",
+                        "outline": "#717786",
+                        "outline-variant": "#c1c6d7",
+                        "surface-container-high": "#e8e8ea",
+                        "on-tertiary-fixed": "#310048",
+                        "on-primary-container": "#fefcff",
+                        "secondary-fixed-dim": "#48ddbc",
+                        "on-secondary-fixed-variant": "#005142",
+                        "on-secondary-container": "#00705c",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#a649d5",
+                        "tertiary-fixed-dim": "#e8b3ff",
+                        "on-tertiary-container": "#fffbff",
+                        "on-surface": "#1a1c1d",
+                        "primary-container": "#0070eb",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#d9dadc",
+                        "surface-container-low": "#f3f3f5",
+                        "background": "#f9f9fb",
+                        "on-secondary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-background": "#1a1c1d",
+                        "surface": "#f9f9fb",
+                        "primary-fixed": "#d8e2ff",
+                        "tertiary-fixed": "#f6d9ff",
+                        "surface-container": "#eeeef0",
+                        "secondary": "#006b58",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#6bfad8",
+                        "on-surface-variant": "#414755",
+                        "on-primary-fixed-variant": "#004493",
+                        "surface-bright": "#f9f9fb",
+                        "surface-variant": "#e2e2e4",
+                        "inverse-primary": "#adc6ff",
+                        "on-secondary-fixed": "#002019",
+                        "inverse-surface": "#2f3132",
+                        "tertiary": "#8a2bb9",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f0f0f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface mesh-gradient min-h-screen selection:bg-primary-fixed selection:text-primary">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-white/60 dark:bg-slate-900/60 backdrop-blur-2xl shadow-[0_20_80px_rgba(26,28,29,0.06)]">
+<div class="max-w-[1440px] mx-auto px-12 h-20 flex items-center justify-between">
+<div class="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">Toolbox-IT</div>
+<div class="hidden md:flex items-center gap-10">
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-['Inter'] font-bold tracking-tight" href="#">Platform</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-['Inter'] font-bold tracking-tight" href="#">Resources</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-['Inter'] font-bold tracking-tight" href="#">Solutions</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-['Inter'] font-bold tracking-tight" href="#">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2.5 text-slate-500 hover:text-slate-900 font-bold transition-colors">Sign In</button>
+<button class="px-8 py-2.5 bg-primary text-on-primary rounded-xl font-bold shadow-lg shadow-primary/20 hover:scale-95 duration-200 ease-out">Get Started</button>
+</div>
+</div>
+</nav>
+<!-- Hero Section -->
+<main class="relative pt-32 pb-20 px-6 overflow-hidden min-h-screen flex flex-col items-center justify-center">
+<!-- Abstract Background Element -->
+<div class="absolute inset-0 -z-10 pointer-events-none opacity-40">
+<img class="w-full h-full object-cover blur-3xl scale-110" data-alt="Abstract 3D rendering of floating translucent code blocks and geometric shapes with soft pastel blue and violet lighting and deep bokeh blur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOHFdZmF5D4FvNfi1PgF2YDbyzyKVZrg9OLMOD2fv5ARIfTAeUMeeQ6jLa6XQK092uv3u4gx65B-NP63X5SmcIxCdhwDSG0dI5fHKFRqffNJOpfNDAf7q4siiq5vQV5INE3QuPXMzRXWaYejvPw8VBCzYQJp2IwICV_Pi4Bo26k5ba8Mm-b4nXWjc3T-TqWfBz7_n7OsQY6dfnWbvBL6oJlQd5FP8MZgcPc9hlCufMUm5T7SYIL_FGFf-OsFJxxRiD8PAJ-BEqWkX5"/>
+</div>
+<div class="max-w-5xl mx-auto text-center z-10">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-low text-primary text-sm font-medium mb-8 border border-outline-variant/15">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Now powered by Next-Gen AI Architecture</span>
+</div>
+<h1 class="text-7xl md:text-9xl font-black tracking-tighter text-gradient leading-[0.9] mb-8">
+                Elevate your Code.
+            </h1>
+<p class="text-xl md:text-2xl text-on-surface-variant font-light max-w-2xl mx-auto mb-12 leading-relaxed">
+                The ultimate development instrument for high-performance teams. Experience precision-engineered tools in a workspace carved from light.
+            </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+<button class="group relative px-10 py-5 bg-primary text-on-primary text-lg font-bold rounded-xl shadow-[0_20px_80px_rgba(0,88,188,0.3)] hover:scale-95 transition-all duration-300 overflow-hidden">
+<span class="relative z-10">Get Started</span>
+<div class="absolute inset-0 bg-gradient-to-tr from-primary to-primary-container opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+<button class="px-10 py-5 glass-card text-on-surface text-lg font-bold rounded-xl border border-outline-variant/20 hover:bg-white/80 transition-all duration-300">
+                    Watch Demo
+                </button>
+</div>
+</div>
+<!-- Floating UI Mockup -->
+<div class="mt-24 w-full max-w-6xl mx-auto relative px-4">
+<div class="glass-card rounded-xl p-4 shadow-[0_40px_100px_rgba(26,28,29,0.1)] border border-white/40">
+<div class="aspect-video rounded-lg overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Cinematic close-up of a high-tech software interface with glowing blue lines, dark mode editor, and soft depth of field" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLU_hj96kBSbJ0Yp3jZ3yBM9PgOEPHC28R2RUOCUFV1cMdA9hzh7M8QXIJVPNqaKFkYMawUj_LqqPcJhE_lfDn0BgRE1v3zur7lTfZ3_yCoNFzNzbrL2PPuuXbuC9sPb6K9bAG53NSHh1G1tO7reHqwA2d4LiHxhrw4jPK3CNJVNKZ7iNT_Me_Wb2_Hf1pTttJ2_4WC0PahhG2YZjJ24WS41tcPBKwnRwUsHyKQKjro0WRlMgoix7Gd1NnrNncfw9G2SMYOcidm79y"/>
+<div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent"></div>
+</div>
+</div>
+<!-- Floating Accents -->
+<div class="absolute -top-12 -right-12 hidden lg:block">
+<div class="glass-card p-6 rounded-lg shadow-xl border border-white/50 max-w-[240px]">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="bolt">bolt</span>
+</div>
+<div class="text-sm font-bold">Real-time Sync</div>
+</div>
+<div class="h-2 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-secondary rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="absolute -bottom-8 -left-8 hidden lg:block">
+<div class="glass-card p-6 rounded-lg shadow-xl border border-white/50 max-w-[200px]">
+<div class="text-xs font-bold text-primary uppercase tracking-widest mb-2">Security</div>
+<div class="text-2xl font-black text-on-surface">99.9%</div>
+<div class="text-xs text-on-surface-variant">Encrypted environment</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bento Grid Features Section -->
+<section class="py-32 px-12 max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<div class="md:col-span-8 glass-card rounded-xl p-12 flex flex-col justify-between min-h-[400px]">
+<div>
+<h3 class="text-4xl font-bold tracking-tight mb-4">Orchestrate with precision.</h3>
+<p class="text-lg text-on-surface-variant max-w-md">Our integrated environment adapts to your workflow, providing the right tools at the right time.</p>
+</div>
+<div class="mt-12 flex gap-4">
+<div class="h-32 flex-1 rounded-lg bg-surface-container-low border border-outline-variant/10"></div>
+<div class="h-32 flex-1 rounded-lg bg-primary-fixed-dim/30 border border-outline-variant/10"></div>
+</div>
+</div>
+<div class="md:col-span-4 bg-primary rounded-xl p-12 flex flex-col justify-end text-on-primary min-h-[400px]">
+<span class="material-symbols-outlined text-5xl mb-6" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<h3 class="text-3xl font-bold tracking-tight mb-4">Enterprise Grade Security.</h3>
+<p class="opacity-80">Built on zero-trust principles for the modern distributed team.</p>
+</div>
+<div class="md:col-span-4 glass-card rounded-xl p-12 min-h-[400px]">
+<h3 class="text-2xl font-bold tracking-tight mb-4">Seamless API</h3>
+<p class="text-on-surface-variant mb-8">Extend your toolbox with our comprehensive GraphQL API.</p>
+<div class="space-y-4">
+<div class="h-2 w-full bg-outline-variant/20 rounded-full"></div>
+<div class="h-2 w-2/3 bg-outline-variant/20 rounded-full"></div>
+<div class="h-2 w-3/4 bg-primary/40 rounded-full"></div>
+</div>
+</div>
+<div class="md:col-span-8 glass-card rounded-xl overflow-hidden min-h-[400px] flex">
+<div class="p-12 w-1/2">
+<h3 class="text-3xl font-bold tracking-tight mb-4">Global Network</h3>
+<p class="text-on-surface-variant">Deploy instantly to 200+ edge locations worldwide for sub-millisecond latency.</p>
+</div>
+<div class="w-1/2 relative bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="Digital map of the world with glowing connection points and neural network lines on a dark blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUf8J-2nFnHFUBHTtoMZV36oE5XtnqIdNSajQusdJLCuxdjO1EcAvVRF7-uroe6IxUrCq7kafbUMWAicHpI00W0Fu6OfsXPJVPoKKRELHYaD6zAdDXvym0tZEKvuskZT9wUEiqe0LTbfiVkq4DvvU8ZOo3HIjE_5P43zLL4nlikJawzj8GeuqtxNMpkCURV2mwk1HPYq9dMoUenyJ4SQccTcjp0H_Z2LSq9vUotCl7RIpjZATZOJa5gzHZKzGSLTSV-fGvd3P959VX"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-white dark:bg-slate-950 w-full py-12">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-center border-t border-slate-100 dark:border-slate-800 pt-12">
+<div class="text-lg font-bold mb-6 md:mb-0">Toolbox-IT</div>
+<div class="flex gap-8 mb-8 md:mb-0">
+<a class="font-['Inter'] font-light text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-colors hover:underline decoration-blue-500 decoration-2 underline-offset-4" href="#">Privacy</a>
+<a class="font-['Inter'] font-light text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-colors hover:underline decoration-blue-500 decoration-2 underline-offset-4" href="#">Terms</a>
+<a class="font-['Inter'] font-light text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-colors hover:underline decoration-blue-500 decoration-2 underline-offset-4" href="#">Security</a>
+<a class="font-['Inter'] font-light text-xs uppercase tracking-widest text-slate-400 hover:text-blue-500 transition-colors hover:underline decoration-blue-500 decoration-2 underline-offset-4" href="#">System Status</a>
+</div>
+<div class="font-['Inter'] font-light text-xs uppercase tracking-widest text-slate-400">
+                © 2024 Toolbox-IT. Carved from light.
+            </div>
+</div>
+</footer>
+<!-- IT-Toolbox Tray (Custom Component) -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+<div class="glass-card px-6 py-3 rounded-full border border-white/40 shadow-2xl flex items-center gap-6">
+<button class="flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="text-xs font-bold uppercase tracking-widest">Command</span>
+</button>
+<div class="w-px h-6 bg-outline-variant/20"></div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined p-2 hover:bg-surface-container-high rounded-full transition-colors cursor-pointer" data-icon="terminal">terminal</span>
+<span class="material-symbols-outlined p-2 hover:bg-surface-container-high rounded-full transition-colors cursor-pointer" data-icon="auto_awesome">auto_awesome</span>
+<span class="material-symbols-outlined p-2 hover:bg-surface-container-high rounded-full transition-colors cursor-pointer text-tertiary" data-icon="inventory_2" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+</div>
+</div>
+</div>
+</body></html>
