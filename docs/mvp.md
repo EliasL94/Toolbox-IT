@@ -22,8 +22,8 @@ Le MVP contient **uniquement** les éléments indispensables pour démontrer la 
 *   **Génération de structure :** L'IA propose 2 à 3 modèles d'architectures pro, sécurisées et adaptées au besoin exprimé.
 
 ### 🔐 Socle Commun
-*   **Liaison OAuth GitHub :** Pour accéder aux dépôts et identifier l'utilisateur.
-*   **Tableau de bord central :** Une vue unique pour lancer les 3 types d'analyses.
+*   **Next.js & GitHub OAuth :** Utilisation de NextAuth.js pour l'authentification et l'accès sécurisé aux dépôts.
+*   **Tableau de bord central :** Une interface performante sous Next.js (Client Components) pour piloter les analyses.
 
 ---
 

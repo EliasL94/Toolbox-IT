@@ -1,25 +1,31 @@
 # Architecture Globale - Toolbox-IT
 
-Ce document définit la structure technique de Toolbox-IT, les responsabilités de chaque module et les flux d'interactions pour garantir une application maintenable et évolutive.
+Ce document définit la structure technique de Toolbox-IT basée sur **Next.js**, les responsabilités de chaque module et les flux d'interactions.
 
-## 🏗️ Schéma d'Architecture Globale
+## 🏗️ Schéma d'Architecture Globale (Next.js)
 
 ```mermaid
 graph TD
-    subgraph "Frontend (Browser)"
-        UI[Interface Utilisateur - HTML/CSS]
-        AppJS[Logique Applicative - JS Vanilla]
+    subgraph "Client Side (Next.js - App Router)"
+        UI[Interfaces React - Client Components]
+        Hook[Hooks & State Management]
     end
 
-    subgraph "Logique & Services"
-        Scanner[ArchiScanner - Analyse Structure]
+    subgraph "Server Side (Next.js - Server Components)"
+        Layout[Layouts & Pages - Server Components]
+        Services[Business Logic - Server Actions]
+        API_Routes[API Routes - /api/v1/*]
+    end
+
+    subgraph "Logiciel & Analyseurs"
+        Scanner[ArchiScanner - Analyse de Dépôt]
         Linter[CodeAnalyzer - Analyse Qualité]
         IAClient[IA Connector - Architecte Intelligent]
     end
 
     subgraph "Persistance & Config"
-        Templates[Templates de Référence - JSON]
-        Storage[LocalStorage - Sessions & Scores]
+        DB[(Base de Données / Proxy Cache)]
+        Templates[Templates de Référence - JSON/TS]
     end
 
     subgraph "Services Externes"
@@ -28,53 +34,55 @@ graph TD
     end
 
     %% Interactions
-    UI <--> AppJS
-    AppJS --> Scanner
-    AppJS --> IAClient
+    UI <--> Hook
+    Hook --> Services
+    Layout --> Services
+    Services --> Scanner
+    Services --> IAClient
+    API_Routes --> Scanner
     
     Scanner --> GitHubAPI
     Scanner --> Templates
     IAClient --> IA_API
     
-    Scanner --> Storage
+    Services --> DB
 ```
 
 ## 🧩 Responsabilités des Blocs
 
-### 1. Interface Utilisateur (UI)
-- **Responsabilité** : Rendu visuel, capture des entrées utilisateur (URLs GitHub, choix de stack) et affichage des scores/rapports.
-- **Technologies** : HTML5, Vanilla CSS (Design Premium).
+### 1. Frontend (Next.js Client Components)
+- **Responsabilité** : Rendu dynamique, interactions temps réel (Chat IA), gestion des formulaires et affichage des scores.
+- **Technologies** : React, Tailwind CSS, Framer Motion (Animations).
 
-### 2. Logique Applicative (AppJS)
-- **Responsabilité** : Orchestration des services, gestion de l'état global et routage simple (SPA-like).
-- **Technologies** : JavaScript (ES6+).
+### 2. Backend & Server Actions (Next.js Server Side)
+- **Responsabilité** : Sécurisation des appels API (GitHub, IA), orchestration des traitements asynchrones et accès aux données.
+- **Technologies** : Next.js Server Actions, API Routes.
 
-### 3. ArchiScanner (Logic)
-- **Responsabilité** : Requêter l'API GitHub pour obtenir l'arborescence des fichiers et la comparer aux `Templates de Référence`.
-- **Indicateur de succès** : Précision du matching entre le repo et le template choisi (ex: Dossier `/src`, `/controllers`, etc.).
+### 3. ArchiScanner & CodeAnalyzer (Logic)
+- **Responsabilité** : Analyse technique des dépôts. Le `Scanner` parse l'arborescence GitHub et le `Linter` analyse la qualité du code.
+- **Technologies** : TypeScript, Parser AST (optionnel).
 
 ### 4. IA Architecte (Service)
-- **Responsabilité** : Formater les prompts pour l'IA et traiter les suggestions de structure en fonction des besoins de l'étudiant.
+- **Responsabilité** : Dialogue avec les LLM pour générer des conseils d'architecture et des structures de projets.
 
 ### 5. Templates de Référence (Data)
-- **Responsabilité** : Stocker les structures idéales pour différents types de projets (Web PHP, Mobile Android, API Node.js).
+- **Responsabilité** : Grilles de notation et exemples de structures (MVC, Clean Archi) pour chaque langage supporté.
 
-## 🔄 Flux Principaux
+## 🔄 Flux Principaux (Next.js Flow)
 
 ### Flux A : Analyse d'Architecture (Scan)
-1. L'utilisateur fournit une URL de dépôt GitHub.
-2. Le `AppJS` déclenche le `Scanner`.
-3. Le `Scanner` récupère l'arborescence via `GitHub API`.
-4. Le `Scanner` compare avec le `Template` sélectionné.
-5. Un rapport de conformité est généré et stocké dans `LocalStorage`.
+1. L'utilisateur saisit une URL GitHub côté Client.
+2. Une **Server Action** est appelée, assurant que le token GitHub reste secret.
+3. Le serveur exécute le `Scanner` qui interroge la `GitHub API`.
+4. Le résultat est comparé aux `Templates` et renvoyé au Client pour affichage.
 
 ### Flux B : Conseil de l'IA Architecte
-1. L'utilisateur décrit son projet via un chat.
-2. Le `IAClient` envoie la requête à l'API externe avec le contexte de la stack choisie.
-3. L'IA retourne une structure de dossiers recommandée.
-4. L'UI affiche la structure sous forme d'arborescence visuelle.
+1. Session de chat interactive (Client Components).
+2. Requêtes envoyées aux **API Routes** de Next.js.
+3. Le serveur communique avec l'IA (`Gemini/OpenAI`).
+4. Streaming de la réponse IA vers le client pour une expérience fluide.
 
-## 🎓 Cohérence MVP & Étudiant
-- **Légèreté** : Pas de framework lourd (React/Vue) pour faciliter la compréhension par des étudiants.
-- **Sécurité** : Pas de backend complexe au départ ; utilisation de clés d'API sécurisées ou de proxy côté client pour le MVP.
-- **Modularité** : Chaque bloc est indépendant, permettant d'ajouter des nouveaux templates ou des nouveaux analyseurs sans tout réécrire.
+## 🎓 Cohérence Next.js & Qualité
+- **Performance** : Utilisation du Streaming et de Suspense pour afficher les rapports d'analyse progressivement.
+- **Sécurité** : Protection CSRF native et isolation des secrets côté serveur.
+- **Maintenabilité** : Structure par "features" à l'intérieur du répertoire `app/`, facilitant l'évolution du projet.

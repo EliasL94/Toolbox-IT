@@ -1,13 +1,13 @@
 # Justification des Choix Techniques - Toolbox-IT
 
-Ce document expose les critères de sélection et les raisons ayant conduit aux choix technologiques de la plateforme Toolbox-IT, conformément aux besoins du MVP et du contexte pédagogique.
+Ce document expose les critères de sélection et les raisons ayant conduit au choix de **Next.js** comme socle technologique de la plateforme Toolbox-IT, conformément aux besoins du MVP et aux standards professionnels actuels.
 
 ## 🎯 Critères de Sélection
 
 Pour ce projet, trois critères majeurs ont été retenus :
-1. **Rapidité d'Apprentissage (Onboarding)** : Le projet doit pouvoir être repris par des étudiants ou des agents IA sans barrière technique complexe (build steps, outils de build lourds).
-2. **Déploiement Simplifié** : La solution doit pouvoir être hébergée instantanément sur n'importe quel service statique (GitHub Pages, Vercel, Netlify) sans configuration serveur.
-3. **Maintenabilité (Modularité)** : Le code doit rester lisible et découpé en responsabilités claires, même sans framework.
+1. **Productivité et Écosystème (DX)** : Utiliser un framework moderne permet de bénéficier de composants réutilisables, d'un routage intégré et d'une gestion d'état simplifiée.
+2. **Performances et SEO (Core Web Vitals)** : Next.js offre un rendu hybride (Static Generation & Server-side Rendering) optimal pour un outil de documentation et de rapports.
+3. **Fullstack par défaut** : La capacité de Next.js à gérer à la fois le Frontend et les API Routes (Backend asynchrones) simplifie l'architecture globale.
 
 ## ⚖️ Analyse Comparative
 
@@ -15,30 +15,31 @@ Nous avons comparé trois directions d'architecture pour le MVP :
 
 | Architecture | Avantages | Inconvénients | Verdict |
 | :--- | :--- | :--- | :--- |
-| **Vanilla Web (Choix retenu)** | Chargement ultra-rapide, zéro dépendance, facile à auditer. | Gestion d'état à faire à la main sur des vues complexes. | **Retenu** (Cible le MVP et la légèreté). |
-| **Framework UI (React/Vue)** | Composants réutilisables, grand écosystème. | Courbe d'apprentissage, tooling (npm/build) pouvant ralentir le démarrage. | **Écarté** (Trop lourd pour la phase de cadrage/MVP). |
-| **Backend-Heavy (Laravel/PHP)** | Sécurité native, gestion de base de données robuste. | Nécessite un serveur actif, déploiement plus coûteux et complexe. | **Écarté** (L'application peut tourner 100% côté client via APIs). |
+| **Next.js (Choix retenu)** | SSR/SSG natif, API routes intégrées, typage fort avec TypeScript. | Nécessite un environnement Node.js pour le build/exécution. | **Retenu** (Performance et évolutivité). |
+| **Vanilla Web** | Chargement ultra-rapide, zéro dépendance. | Gestion d'état complexe, pas de backend intégré, duplication de code UI. | **Écarté** (Trop limité pour l'évolution IA). |
+| **Framework UI Seul (React Vite)** | Très flexible, léger. | Nécessite un backend séparé pour sécuriser les clés d'API IA. | **Écarté** (Complexité de déploiement multi-services). |
 
-## 💡 Justification de la Stack "Vanilla & API-First"
+## 💡 Justification de la Stack "Next.js & Server Components"
 
-Le choix de **HTML/CSS/JS natif** couplé à des **APIs Externes** (GitHub & IA) est justifié par :
-- **Servir le besoin avant la technique** : Notre besoin est d'analyser des fichiers et de générer du texte. Une application client-side suffit largement pour appeler l'API GitHub et afficher un score.
-- **Portabilité** : Le projet "vit" dans le navigateur, éliminant les problèmes de compatibilité système (Windows vs Mac vs Linux) pour les futurs contributeurs.
-- **Transparence** : Pour un outil de "Review d'Architecture", il est primordial de montrer l'exemple avec un code source pur, compréhensible par tous les profils d'étudiants.
+Le choix de **Next.js 14+ (App Router)** est justifié par :
+- **Sécurité des clés d'API** : Les *Server Components* et les *API Routes* permettent de requêter GitHub et les moteurs d'IA sans jamais exposer les clés secrètes côté client.
+- **Typage Strict (TypeScript)** : Indispensable pour manipuler des structures d'arborescence complexes (AST) et des contrats d'API sans erreurs.
+- **Design System Efficient** : Utilisation de **Tailwind CSS** pour garantir une UI premium, responsive et rapide à produire.
+- **Hébergement Vercel** : Déploiement en "Zero Config" avec support natif des fonctions serverless pour le traitement lourd de l'IA.
 
 ## 🛡️ Impacts sur la Qualité, Sécurité et CI/CD
 
 ### Qualité & Testabilité
-L'absence de framework force une rigueur dans l'organisation des fichiers (Clean Code). La testabilité est assurée par une logique métier (Scanner) séparée de l'UI (DOM), permettant des tests unitaires en JS pur.
+L'utilisation de TypeScript réduit drastiquement les bugs de production. Nous utilisons **Jest** et **React Testing Library** pour valider la logique des analyseurs d'architecture.
 
 ### Sécurité
-Le choix "Client-Side" implique que les secrets (clés d'API) ne doivent pas être exposés. Pour le déploiement pro, un proxy minimaliste (Serverless Functions) sera ajouté pour masquer les clés, garantissant la sécurité des interactions IA.
+Toute la logique sensible (Appels OpenAI/Gemini, GitHub OAuth) est encapsulée dans des *Server Actions* ou des *API Routes* protégées. Le stockage des sessions utilisateur est géré de manière sécurisée (NextAuth.js ou solution équivalente).
 
 ### CI/CD (Intégration Continue)
-Le flux CI/CD est extrêmement léger :
-1. Linting CSS/JS automatique.
-2. Validation des fichiers Markdown (Docs).
-3. Déploiement automatique sur GitHub Pages à chaque commit sur `main`.
+Le flux CI/CD est automatisé via GitHub Actions :
+1. Type-checking (`tsc`) et Linting (`eslint`).
+2. Build de production pour détecter les erreurs de rendu.
+3. Déploiement automatique en environnement de Preview (Vercel) à chaque Pull Request.
 
 ---
-*Document validé par l'Architecte Logiciel le 14/04/2026*
+*Document mis à jour par l'Architecte Logiciel le 14/04/2026*

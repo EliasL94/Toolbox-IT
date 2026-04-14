@@ -1,61 +1,56 @@
 # Diagramme de Séquence : Parcours Principal - Toolbox-IT
 
-Ce document modélise les interactions techniques lors du parcours principal : le scan d'une architecture GitHub par un utilisateur.
+Ce document modélise les interactions techniques lors du parcours principal sous **Next.js** : le scan d'une architecture GitHub par un utilisateur.
 
-## 🔄 Analyse d'Architecture (Scan GitHub)
-
-Le diagramme suivant illustre le flux nominal et un cas d'erreur (dépôt non trouvé).
+## 🔄 Analyse d'Architecture (Next.js & Server Actions)
 
 ```mermaid
 sequenceDiagram
     participant U as Utilisateur
-    participant UI as Interface Utilisateur
-    participant JS as Logique (AppJS)
-    participant SC as ArchiScanner
-    participant GH as API GitHub
-    participant DB as Templates / LocalStorage
+    participant UI as Client Component (React)
+    participant SA as Server Action (Next.js)
+    participant SC as ArchiScanner (Server Logic)
+    participant GH as API GitHub (Secret Token)
+    participant DB as Redis / Metadata DB
 
     U->>UI: Saisit URL GitHub & Choisit Template
-    UI->>JS: Déclenche scan (URL, TemplateId)
+    UI->>SA: Appelle Server Action (url, templateId)
     
-    JS->>UI: Affiche état "Chargement..."
+    UI->>UI: État "Analyse en cours..." (React Suspense)
     
-    JS->>SC: Analyser(URL, TemplateId)
+    SA->>SC: Analyser(url, templateId)
     
-    SC->>DB: Récupérer Template JSON
-    DB-->>SC: Template (MVC, Clean, etc.)
-    
-    SC->>GH: GET /repos/{user}/{repo}/contents
+    SC->>GH: GET /repos/{user}/{repo}/contents (Auth Header)
     
     alt Flux Nominal (Success 200)
-        GH-->>SC: Liste des fichiers/dossiers
-        SC->>SC: Comparer arborescence vs Template
-        SC->>SC: Calculer Score de Qualité
-        SC->>DB: Sauvegarder Score & Rapport
-        SC-->>JS: Résultats du Scan
-        JS->>UI: Masque Loader & Affiche Résultats
-        UI-->>U: Affiche Score et Recommandations
-    else Dépôt non trouvé / Erreur API (404/403)
-        GH-->>SC: Erreur (Not Found / Rate Limit)
-        SC-->>JS: Exception(Error Message)
-        JS->>UI: Affiche Message d'Erreur contextuel
-        UI-->>U: "⚠️ Dépôt introuvable ou accès refusé"
+        GH-->>SC: Arborescence du dépôt
+        SC->>SC: Comparaison vs Template standard
+        SC->>SC: Calcul du score d'architecture
+        SC->>DB: Sauvegarder métadonnées du scan
+        SC-->>SA: Rapport Final (JSON)
+        SA-->>UI: Retourne les données de l'analyse
+        UI-->>U: Affiche Score, Graphes et Conseils
+    else Erreur GitHub (404 / Rate Limit)
+        GH-->>SC: Erreur API
+        SC-->>SA: Lève Exception
+        SA-->>UI: Retourne objet d'erreur
+        UI-->>U: Feedback "Dépôt privé ou introuvable"
     end
 ```
 
-## 📝 Détails des Étapes
+## 📝 Détails des Étapes (Next.js Paradigm)
 
-### 1. Validation & Traitement
-L'interface utilisateur effectue une première validation formatée de l'URL GitHub avant d'appeler la logique applicative. La logique (`AppJS`) orchestre ensuite les appels aux services spécialisés.
+### 1. Sécurisation (Server-Side)
+L'utilisation de **Server Actions** garantit que le `GITHUB_TOKEN` utilisé pour requêter les dépôts (et éviter le rate-limiting) n'est jamais exposé dans le code envoyé au navigateur de l'utilisateur.
 
-### 2. Récupération & Services Externes
-Le composant `ArchiScanner` est responsable de la communication avec l'API GitHub. Il transforme la réponse brute de GitHub en une structure interne comparable à nos templates.
+### 2. Traitement des données
+Le composant `ArchiScanner` s'exécute côté serveur. Il peut ainsi manipuler des structures complexes et effectuer la comparaison avec les templates stockés en base de données ou en fichiers statiques serveur sans impacter le poids du bundle client.
 
-### 3. Persistance
-Chaque scan réussi est persisté dans le `LocalStorage`. Cela permet à l'utilisateur de retrouver ses analyses précédentes sans re-scanner le dépôt (gain de temps et économie de quota API).
+### 3. Persistance & Cache
+Les résultats ne sont plus limités au `LocalStorage`. Ils peuvent être stockés dans une base de données (ex: Prisma + PostgreSQL) ou un cache rapide (Redis), permettant à un professeur de retrouver les scans de toute sa promotion de manière centralisée.
 
-### 4. Gestion d'Erreur
-Le diagramme prévoit le cas où le dépôt n'est pas accessible (privé, URL erronée) ou si les limites de l'API GitHub sont atteintes. L'utilisateur reçoit alors un feedback explicite au lieu d'un écran figé.
+### 4. Expérience Utilisateur
+Le passage à Next.js permet d'utiliser le **Streaming** : l'utilisateur voit l'interface de résultat immédiatement, et les détails de l'analyse "populent" l'écran au fur et à mesure que le serveur termine ses calculs.
 
 ---
-*Diagramme cohérent avec l'Architecture Globale (US10) et la Stack Technique (US11).*
+*Diagramme mis à jour pour la stack Next.js le 14/04/2026.*

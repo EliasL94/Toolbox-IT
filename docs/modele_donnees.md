@@ -74,4 +74,4 @@ classDiagram
 3. **Archivage** : Les `analyses` sont conservées historiquement pour permettre de voir la progression de l'étudiant entre deux scans.
 
 ---
-*Base de données conçue pour être implémentée via un backend SQL ou simulée via un stockage JSON structuré.*
+*Modèle de données conçu pour une implémentation via ORM (ex: Prisma) sur une base PostgreSQL, compatible avec le déploiement serverless de Next.js.*
