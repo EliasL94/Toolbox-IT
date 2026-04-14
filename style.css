@@ -396,6 +396,7 @@ section {
 .icon-2 { bottom: 20%; right: 20%; animation-delay: 1s; }
 .icon-3 { top: 50%; left: 60%; animation-delay: 2s; }
 
+<<<<<<< HEAD
 /* Tools Grid */
 .problem-grid-tools {
     display: grid;
@@ -432,6 +433,8 @@ section {
     background: var(--secondary);
 }
 
+=======
+>>>>>>> 0b4cad640bb821f4e07f36fea3ab81752b22acc6
 /* Steps Grid */
 .centered { text-align: center; }
 
