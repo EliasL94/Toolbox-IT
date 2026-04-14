@@ -59,13 +59,14 @@ Les établissements d'enseignement supérieur en informatique (Écoles d'ingéni
 
 **Situation Actuelle :** La revue de l'architecture des projets étudiants est un processus entièrement manuel, lent et soumis à la subjectivité de l'évaluateur, avec trop peu de retours itératifs pour l'apprenant.
 
-**Ce que permet Toolbox-IT (Reviewer d'architecture) :** 
+**Ce que permet Toolbox-IT (La Suite d'Outils) :** 
 
-* **Pour le correcteur** : Diviser par 2 le temps de correction et de vérification d'architecture, libérant du temps pour mentorer.
-* **Pour l'étudiant** : Un diagnostic instantané qui lui permet de s'auto-évaluer et de corriger l'architecture la veille ou l'avant-veille de son rendu officiel.
+*   **L'Analyseur d'Archi** : Vérification automatisée de la structure des dossiers par rapport à des standards (MVC, Clean, etc.).
+*   **L'Analyseur de Code** : Review automatisée de la qualité, sécurité et lisibilité du code source.
+*   **L'IA Architecte** : Un outil conversationnel qui interroge l'apprenant sur sa stack et ses objectifs pour lui proposer des schémas d'architecture professionnels et sécurisés.
 
-**La mission de ce premier outil :**
-*« Aider les équipes pédagogiques à gagner du temps et standardiser leurs évaluations grâce à l'analyse et la notation automatisée de l'architecture et santé des dépôts GitHub étudiants. »*
+**La mission de la plateforme :**
+*« Accompagner les apprenants et les équipes pédagogiques dans la maîtrise des standards de l'industrie grâce à une suite d'outils d'analyse, de review et de conception automatisée. »*
 
 ---
 
@@ -73,8 +74,8 @@ Les établissements d'enseignement supérieur en informatique (Écoles d'ingéni
 
 **Format court (à lire en moins de 45 secondes) :**
 
-> « Aujourd'hui, dans les écoles d'informatique, les professeurs perdent un temps précieux à vérifier manuellement la structure et l'architecture des dizaines de projets étudiants qu'ils doivent évaluer. 
+> « Aujourd'hui, la qualité d'un projet tech ne se résume pas à son fonctionnement : sa structure et sa propreté sont critiques pour sa maintenabilité. Pourtant, l'évaluation de ces critères reste lente et subjective dans les écoles.
 > 
-> **Toolbox-IT** est une plateforme éducative qui automatise l'analyse des dépôts de code de ces projets. 
+> **Toolbox-IT** est une suite d'outils intelligents qui automatise la review d'architecture et de code des dépôts étudiants. 
 > 
-> Notre outil scanne instantanément les travaux pour vérifier s'ils respectent les standards attendus par l'école. Le bénéfice est immédiat : les correcteurs divisent par deux leur temps de vérification pour se concentrer sur la logique métier, et les étudiants bénéficient d'un retour continu pour s'améliorer avant le rendu final. »
+> Grâce à nos analyseurs et à notre assistant de conception IA, les professeurs gagnent un temps précieux sur les tâches répétitives et les étudiants bénéficient d'un mentor virtuel disponible 24h/24 pour les aider à bâtir des projets aux standards professionnels. »

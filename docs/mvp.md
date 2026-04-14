@@ -1,52 +1,46 @@
 # [Produit] Définition du MVP, Hors Périmètre et Critères de Coupe
 
-Ce document liste, pour l'outil de validation d'architecture de Toolbox-IT, le noyau fonctionnel strictement essentiel (MVP) pour prouver sa proposition de valeur, ainsi que les éléments délibérément écartés.
+Ce document liste, pour la suite Toolbox-IT, le noyau fonctionnel strictement essentiel (MVP) pour prouver sa proposition de valeur, ainsi que les éléments délibérément écartés.
 
 ---
 
 ## 1. Le Noyau Minimal Livrable (MVP)
 
-Le MVP contient **uniquement** les éléments indispensables pour dérouler de bout en bout le parcours principal d'évaluation d'un rendu, garantissant de livrer un produit cohérent et démontrable :
+Le MVP contient **uniquement** les éléments indispensables pour démontrer la puissance des trois outils de la suite :
 
-* **Moteur d'analyse architectural (Le cœur vital) :** Un script capable se connecter à l'API GitHub pour extraire l'arborescence (fichiers/dossiers à un instant T) d'un dépôt ciblé.
-* **Soumission unitaire d'un dépôt :** L'utilisateur fournit l'URL d'un dépôt GitHub (public ou privé si droits obtenus).
-* **Un Template architectural (JSON/YAML) pré-défini :** L'application intègre en "dur" (sans interface complexe de création) 1 ou 2 standards d'architecture typiques (ex. "API Node.js de base" avec présence obligatoire d'un pattern `src`, `controllers`, `tests`, `README.md`, `Dockerfile`).
-* **Tableau de bord de résultat (Feedback) :** Une vue simple après analyse avec un Score global (ex. 80%) et la validation liste par liste des critères en succès (En Vert) et des manquements (En Rouge).
-* **Liaison basique par OAuth GitHub :** Pour pouvoir interagir avec l'API GitHub sans se heurter instantanément à des limites de requêtes, et pour accéder aux projets étudiants potentiellement privés.
+### 🏛️ Outil 1 : Analyseur d'Architecture
+*   **Scan d'arborescence :** Connexion à l'API GitHub pour extraire la structure des dossiers d'un dépôt public/privé.
+*   **Templates de référence :** Comparaison avec 1 ou 2 standards "en dur" (Clean Archi, MVC).
+*   **Score Archi :** Feedback visuel sur le respect du squelette projet.
 
-*Ce qu'il reste est un produit utilisable immédiatement pour corriger un projet lors d'une soutenance.*
+### 🛠️ Outil 2 : Analyseur de Code
+*   **Review de Qualité (V1) :** Intégration d'un linter (type ESLint/Prettier) pour identifier les erreurs de syntaxe, de lisibilité et les premières failles de sécurité.
+*   **Rapport de Santé :** Liste des "mauvaises pratiques" détectées dans le dépôt.
+
+### 📋 Outil 3 : Assistant IA Architecte
+*   **Conception Interactive :** Une interface de type "Chat" où l'IA pose des questions sur la stack (Frontend, Backend, BDD) et les objectifs du projet.
+*   **Génération de structure :** L'IA propose 2 à 3 modèles d'architectures pro, sécurisées et adaptées au besoin exprimé.
+
+### 🔐 Socle Commun
+*   **Liaison OAuth GitHub :** Pour accéder aux dépôts et identifier l'utilisateur.
+*   **Tableau de bord central :** Une vue unique pour lancer les 3 types d'analyses.
 
 ---
 
 ## 2. Éléments Hors Périmètre pour la V1 (Justifications)
 
-Les éléments suivants sont écartés du développement initial pour forcer la priorisation et sécuriser le délai de livraison étudiant :
+Les éléments suivants sont écartés du développement initial pour sécuriser le délai de livraison :
 
-* **Analyse de masse (Scan automatique de 40 repos d'un coup) :**
-  * *Justification :* Implique une complexe gestion asynchrone pour éviter les Timeouts (dépassements de délais) des requêtes web. Demander au professeur de copier-coller les URL une par une suffira pour un outil V1 (certes un poil plus lent, mais fonctionnel).
-* **Éditeur Front-end visuel de Templates (UI Builder) :**
-  * *Justification :* Développer une interface (Glisser-Déposer, Ajout dynamique de règles) pour que le professeur crée ses grilles est lourd. Les templates seront écrits statiquement en code par les développeurs ou via un import fichier texte basique pour la démonstration.
-* **Intégration Continue (Pipelines, Bot GitHub Actions) :**
-  * *Justification :* S'intégrer directement dans les Pull Requests d'un repo déplace la charge sur de l'infrastructure Cloud et s'écarte de la plateforme Web centrale. On garde ce parcours web standalone pour le moment.
-* **Fonctions CI/CD et Analyse de Code profonde :**
-  * *Justification :* Toolbox-IT n'est ni SonarQube ni ESLint. Nous ne lisons pas la qualité du code à l'intérieur des fichiers, nous jugeons un squelette/arborescence de projet.
+*   **Analyse de masse (Scan de 40 repos d'un coup) :** Trop complexe à gérer techniquement pour une V1 (timeouts/files d'attente).
+*   **Éditeur de Templates visuel (UI Builder) :** Le professeur ne peut pas encore créer sa propre grille via l'interface, il utilise les standards Toolbox.
+*   **Automatisation CI/CD :** Pas de bot GitHub automatique pour le moment, l'analyse est déclenchée manuellement sur la plateforme.
 
 ---
 
 ## 3. Les Critères de Coupe (Arbitrages de Secours)
 
-Si le temps de développement de l'équipe (ou le temps étudiant imparti) vient à manquer sévèrement avant la *Deadline*, voici l'ordre et les critères de ce qui sera abandonné (coupé) pour tout de même conserver un MVP démontrable en condition réelle :
+Si le temps manque, voici ce qui sera retiré par ordre de priorité :
 
-1. **Coupe de Niveau 1 (Atteinte Pédagogique) : Abandon des détails formatifs**
-   * *Option choisie :* Retirer toutes les ressources documentaires prévues du genre ("Pourquoi vous avez échoué", infobulles sur le Rôle de tel fichier).
-   * *Conséquence sur la Démo :* Le scanner devient un outil punitif/script binaire (Vrai / Faux) mais reste totalement fiable techniquement.
-
-2. **Coupe de Niveau 2 (Atteinte Portée) : Suppression du Scan complet des sous-dossiers**
-   * *Option choisie :* Ne limiter l'outil qu'à l'examen Strict de la RACINE du repository pour vérifier s'il est techniquement bien configuré avant l'analyse humaine.
-   * *Conséquence sur la Démo :* On ne vérifiera plus toute l'architecture interne MVC, mais au moins les basiques vitaux (`.gitignore`, `README`, `package.json`, `.env.example`, `Docker`).
-
-3. **Coupe de Niveau 3 (Atteinte Technique majeure) : Abandon de la Liaison des Comptes (OAuth)**
-   * *Option choisie :* Si l'intégration des accès API est bloquante, on retirera les profils.
-   * *Conséquence sur la Démo :* L'application (via un simple champ de texte) ne sera capable d'analyser **exclusivement** que des repos publics ouverts.
-
-*Même au niveau de coupe maximal, Toolbox reste un "Validateur racine de dépôt public pertinent".*
+1.  **Niveau 1 : Retrait de l'Analyseur de Code.** On se concentre uniquement sur l'Architecture (Review + Conseil IA).
+2.  **Niveau 2 : Retrait de l'IA Architecte.** On ne garde que l'Analyseur d'Architecture (Le cœur historique).
+3.  **Niveau 3 : Scan public uniquement.** Retrait de l'OAuth GitHub, l'outil ne scanne que des dépôts publics via URL.
