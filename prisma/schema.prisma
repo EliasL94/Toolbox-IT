@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  reviews      Review[]
+}
+
+model Review {
+  id             String    @id @default(uuid())
+  userId         String
+  status         String    // "pending", "processing", "completed", "failed"
+  repository_url String
+  branch         String    @default("main")
+  created_at     DateTime  @default(now())
+  completed_at   DateTime?
+  report         String?   // Stocké en texte JSON via Prisma
+  error_message  String?
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}

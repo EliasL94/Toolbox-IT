@@ -12,7 +12,7 @@ export default function AnalyzePage() {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleAnalyze = (e: React.FormEvent) => {
+  const handleAnalyze = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url.includes('github.com')) {
       setError('Veuillez entrer une URL GitHub valide.');
@@ -20,12 +20,31 @@ export default function AnalyzePage() {
     }
     setError('');
     setIsAnalyzing(true);
-    
-    // Simulate process
-    setTimeout(() => {
+
+    try {
+      const response = await fetch('/api/v1/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          repository_url: url,
+          branch: 'main',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || 'Une erreur est survenue.');
+        setIsAnalyzing(false);
+        return;
+      }
+
+      // Rediriger vers la page de résultats avec le vrai ID
+      router.push(`/reviews/${data.id}`);
+    } catch {
+      setError('Impossible de contacter le serveur. Vérifiez votre connexion.');
       setIsAnalyzing(false);
-      router.push('/reviews/rev_demo_001');
-    }, 2500);
+    }
   };
 
   return (
@@ -60,7 +79,7 @@ export default function AnalyzePage() {
           >
             {isAnalyzing ? (
               <span className="flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin" /> Analyse...
+                <Loader2 className="h-5 w-5 animate-spin" /> Analyse en cours...
               </span>
             ) : (
               <span className="flex items-center gap-2">
@@ -75,7 +94,7 @@ export default function AnalyzePage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto w-full mt-16 opacity-70">
         <div className="flex flex-col items-center text-center gap-2">
           <Server className="h-6 w-6 text-slate-400" />
-          <h3 className="font-medium text-slate-700 dark:text-slate-300">Paterns Architecturaux</h3>
+          <h3 className="font-medium text-slate-700 dark:text-slate-300">Patterns Architecturaux</h3>
           <p className="text-sm text-slate-500">Vérification MVC, Clean Arch...</p>
         </div>
         <div className="flex flex-col items-center text-center gap-2">
