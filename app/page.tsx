@@ -1,273 +1,198 @@
-/* eslint-disable react/no-unescaped-entities */
-"use client";
-
-import { FormEvent, useMemo, useState } from "react";
-
-type CreateReviewResponse = {
-  id: string;
-  status: string;
-  repository_url: string;
-  created_at: string;
-  links: {
-    status_url: string;
-  };
-};
-
-type ReviewProgressResponse = {
-  id: string;
-  status: "pending" | "processing";
-  progress: number;
-  message: string;
-};
-
-type ReviewCompletedResponse = {
-  id: string;
-  status: "completed";
-  repository_url: string;
-  completed_at: string;
-  report: {
-    architecture: {
-      score: number;
-      summary: string;
-      improvements: string[];
-    };
-    security: {
-      score: number;
-      issues_found: number;
-    };
-    general_feedback: string;
-  };
-};
-
-function isValidGithubUrl(url: string): boolean {
-  try {
-    const parsed = new URL(url);
-    return (
-      parsed.protocol === "https:" &&
-      parsed.hostname === "github.com" &&
-      /^\/[^/]+\/[^/]+\/?$/.test(parsed.pathname)
-    );
-  } catch {
-    return false;
-  }
-}
-
-const WAIT_BETWEEN_POLLS_MS = 500;
+import Link from "next/link";
 
 export default function Home() {
-  const [repositoryUrl, setRepositoryUrl] = useState("");
-  const [branch, setBranch] = useState("main");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [progress, setProgress] = useState(0);
-  const [reviewId, setReviewId] = useState<string | null>(null);
-  const [result, setResult] = useState<ReviewCompletedResponse | null>(null);
-
-  const canSubmit = useMemo(
-    () => !isSubmitting && repositoryUrl.trim().length > 0,
-    [isSubmitting, repositoryUrl],
-  );
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    setError(null);
-    setMessage(null);
-    setResult(null);
-    setProgress(0);
-    setReviewId(null);
-
-    const trimmedUrl = repositoryUrl.trim();
-    const trimmedBranch = branch.trim() || "main";
-
-    if (!isValidGithubUrl(trimmedUrl)) {
-      setError("Veuillez saisir une URL GitHub valide (https://github.com/{owner}/{repo}).");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const createResponse = await fetch("/api/v1/reviews", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          repository_url: trimmedUrl,
-          branch: trimmedBranch,
-        }),
-      });
-
-      if (!createResponse.ok) {
-        const payload = (await createResponse.json()) as { error?: string };
-        throw new Error(payload.error ?? "Impossible de démarrer l'analyse.");
-      }
-
-      const created = (await createResponse.json()) as CreateReviewResponse;
-      setReviewId(created.id);
-      setMessage("Analyse démarrée. Vérification de la structure en cours...");
-
-      let shouldContinue = true;
-
-      while (shouldContinue) {
-        await new Promise((resolve) => {
-          setTimeout(resolve, WAIT_BETWEEN_POLLS_MS);
-        });
-
-        const statusResponse = await fetch(created.links.status_url, {
-          method: "GET",
-        });
-
-        if (!statusResponse.ok && statusResponse.status !== 503) {
-          const payload = (await statusResponse.json()) as { error?: string };
-          throw new Error(payload.error ?? "Erreur pendant la récupération du statut.");
-        }
-
-        const payload = (await statusResponse.json()) as
-          | ReviewProgressResponse
-          | ReviewCompletedResponse
-          | { status: "failed"; error_message?: string };
-
-        if (payload.status === "completed") {
-          setProgress(100);
-          setMessage("Analyse terminée.");
-          setResult(payload);
-          shouldContinue = false;
-          continue;
-        }
-
-        if (payload.status === "failed") {
-          throw new Error(payload.error_message ?? "Analyse échouée.");
-        }
-
-        setProgress(payload.progress);
-        setMessage(payload.message);
-      }
-    } catch (submissionError) {
-      const fallbackMessage = "Une erreur est survenue pendant le parcours d'analyse.";
-      const nextError =
-        submissionError instanceof Error ? submissionError.message : fallbackMessage;
-      setError(nextError);
-    } finally {
-      setIsSubmitting(false);
-    }
-  }
-
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-6 py-16 md:px-10">
-      <section className="glass-card space-y-3">
-        <p className="eyebrow">Toolbox-IT / US23</p>
-        <h1 className="text-4xl font-bold tracking-[-0.02em] text-slate-950">
-          Parcours principal étudiant : analyse d'un dépôt GitHub de bout en bout
-        </h1>
-        <p className="max-w-3xl text-base leading-7 text-slate-700">
-          Entrez l'URL d'un repository puis lancez l'analyse. L'interface gère la
-          validation, les transitions d'état et l'affichage du rapport final.
-        </p>
-      </section>
-
-      <section className="glass-card space-y-4">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950">Lancer une analyse</h2>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700" htmlFor="repository-url">
-              URL du repository GitHub
-            </label>
-            <input
-              id="repository-url"
-              name="repository-url"
-              type="url"
-              value={repositoryUrl}
-              onChange={(event) => setRepositoryUrl(event.target.value)}
-              placeholder="https://github.com/owner/repository"
-              className="w-full rounded-xl border border-white/20 bg-white/70 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-400"
-              required
-            />
+    <>
+      <header className="site-header">
+        <nav className="site-nav">
+          <p className="text-sm font-semibold tracking-[-0.01em]">Toolbox-IT</p>
+          <div className="nav-links">
+            <a href="#probleme">Probleme</a>
+            <a href="#solution">Solution</a>
+            <a href="#parcours">Parcours</a>
           </div>
+          <Link href="/dashboard" className="btn-primary">
+            Ouvrir l&apos;application
+          </Link>
+        </nav>
+      </header>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-700" htmlFor="branch">
-              Branche (optionnel)
-            </label>
-            <input
-              id="branch"
-              name="branch"
-              type="text"
-              value={branch}
-              onChange={(event) => setBranch(event.target.value)}
-              placeholder="main"
-              className="w-full rounded-xl border border-white/20 bg-white/70 px-4 py-3 text-slate-900 outline-none transition focus:border-blue-400"
-            />
-          </div>
+      <main className="container-page flex flex-col gap-6">
+        <section className="hero-grid">
+          <article className="glass-card space-y-4">
+            <p className="eyebrow">The Digital Ether</p>
+            <h1 className="text-4xl font-bold tracking-[-0.02em] text-slate-950 dark:text-slate-100">
+              La suite intelligente pour reviewer les projets Github et coacher
+              l&apos;architecture.
+            </h1>
+            <p className="max-w-xl text-base leading-7 text-slate-700 dark:text-slate-300">
+              Toolbox-IT automatise les analyses architecture/code, fournit des
+              feedbacks actionnables et accompagne les etudiants avec un
+              assistant IA Architecte.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <Link href="/analyze" className="btn-primary">
+                Analyser un depot
+              </Link>
+              <Link href="/reviews/rev_demo_001" className="btn-secondary">
+                Voir un rapport type
+              </Link>
+            </div>
+          </article>
 
-          <button
-            type="submit"
-            disabled={!canSubmit}
-            className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isSubmitting ? "Analyse en cours..." : "Analyser ce dépôt"}
-          </button>
-        </form>
-      </section>
-
-      {error ? (
-        <section className="glass-card space-y-2">
-          <h2 className="text-xl font-bold tracking-[-0.02em] text-red-700">Erreur</h2>
-          <p className="text-slate-700">{error}</p>
+          <article className="glass-card space-y-4">
+            <p className="eyebrow">Vue d&apos;ensemble</p>
+            <div className="kpi-grid">
+              <div className="rounded-2xl bg-white/45 p-4 dark:bg-slate-900/40">
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  3
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  Outils complementaires
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/45 p-4 dark:bg-slate-900/40">
+                <p className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+                  +70%
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  Temps de correction gagne
+                </p>
+              </div>
+              <div className="rounded-2xl bg-white/45 p-4 dark:bg-slate-900/40">
+                <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-300">
+                  24/7
+                </p>
+                <p className="text-sm text-slate-600 dark:text-slate-300">
+                  Feedback continu
+                </p>
+              </div>
+            </div>
+            <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
+              Cible: professeurs correcteurs, etudiants et responsables
+              pedagogiques. Le MVP privilegie l&apos;analyse unitaire de depot et
+              les standards predefinis (MVC/Clean Architecture).
+            </p>
+          </article>
         </section>
-      ) : null}
 
-      {message ? (
-        <section className="glass-card space-y-3">
-          <h2 className="text-xl font-bold tracking-[-0.02em] text-slate-950">Progression</h2>
-          <p className="text-slate-700">{message}</p>
-          <p className="text-sm text-slate-600">Review ID : {reviewId ?? "initialisation..."}</p>
-          <div className="h-3 w-full overflow-hidden rounded-full bg-slate-200">
-            <div
-              className="h-full rounded-full bg-blue-500 transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <p className="text-sm font-medium text-slate-700">{progress}%</p>
-        </section>
-      ) : null}
-
-      {result ? (
-        <section className="glass-card space-y-4">
-          <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950">
-            Résultat de l'analyse
+        <section id="probleme" className="glass-card space-y-4">
+          <p className="eyebrow">Probleme</p>
+          <h2 className="text-3xl font-bold tracking-[-0.02em] text-slate-950 dark:text-slate-100">
+            Corriger vite, objectivement, et sans perdre le feedback pedagogique
           </h2>
-          <p className="text-slate-700">
-            Dépôt analysé : <code className="inline-code">{result.repository_url}</code>
-          </p>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl bg-white/60 p-4">
-              <p className="text-sm text-slate-600">Score architecture</p>
-              <p className="text-3xl font-bold text-slate-900">{result.report.architecture.score}/100</p>
-              <p className="mt-2 text-slate-700">{result.report.architecture.summary}</p>
-            </div>
-            <div className="rounded-xl bg-white/60 p-4">
-              <p className="text-sm text-slate-600">Score sécurité</p>
-              <p className="text-3xl font-bold text-slate-900">{result.report.security.score}/100</p>
-              <p className="mt-2 text-slate-700">
-                Issues trouvées : {result.report.security.issues_found}
+          <div className="tool-grid">
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                Charge de correction
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Cloner et auditer a la main des dizaines de repos prend trop de
+                temps.
               </p>
-            </div>
+            </article>
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                Heterogeneite d&apos;evaluation
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Les standards architecture ne sont pas appliques uniformement.
+              </p>
+            </article>
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
+                Feedback trop tardif
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Les etudiants decouvrent souvent les erreurs de structure au
+                rendu final.
+              </p>
+            </article>
           </div>
-
-          <div className="space-y-2">
-            <p className="font-semibold text-slate-900">Améliorations recommandées</p>
-            <ul className="list-disc space-y-1 pl-5 text-slate-700">
-              {result.report.architecture.improvements.map((improvement) => (
-                <li key={improvement}>{improvement}</li>
-              ))}
-            </ul>
-          </div>
-
-          <p className="text-slate-700">{result.report.general_feedback}</p>
         </section>
-      ) : null}
-    </main>
+
+        <section id="solution" className="glass-card space-y-4">
+          <p className="eyebrow">Solution</p>
+          <h2 className="text-3xl font-bold tracking-[-0.02em] text-slate-950 dark:text-slate-100">
+            Une plateforme, trois outils
+          </h2>
+          <div className="tool-grid">
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <h3 className="text-xl font-semibold">Analyseur d&apos;architecture</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Compare la structure du depot aux templates MVC/Clean et calcule
+                un score.
+              </p>
+            </article>
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <h3 className="text-xl font-semibold">Analyseur de code</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Detecte mauvaises pratiques et signaux de securite pour une revue
+                plus fiable.
+              </p>
+            </article>
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <h3 className="text-xl font-semibold">IA Architecte</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Discussion guidee qui propose des architectures pro selon stack,
+                objectifs et contraintes.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="parcours" className="glass-card space-y-4">
+          <p className="eyebrow">Parcours principal</p>
+          <div className="steps-grid">
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <p className="text-sm font-semibold uppercase tracking-[0.05em] text-blue-700 dark:text-blue-300">
+                Etape 1
+              </p>
+              <h3 className="mt-2 text-xl font-semibold">Importer un depot</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Saisie URL Github + branche, validation, puis lancement
+                d&apos;analyse.
+              </p>
+            </article>
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <p className="text-sm font-semibold uppercase tracking-[0.05em] text-blue-700 dark:text-blue-300">
+                Etape 2
+              </p>
+              <h3 className="mt-2 text-xl font-semibold">Suivre le traitement</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Statuts pending/processing et progression jusqu&apos;au rapport.
+              </p>
+            </article>
+            <article className="rounded-3xl bg-white/50 p-5 dark:bg-slate-900/35">
+              <p className="text-sm font-semibold uppercase tracking-[0.05em] text-blue-700 dark:text-blue-300">
+                Etape 3
+              </p>
+              <h3 className="mt-2 text-xl font-semibold">Exploiter le rapport</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                Scores architecture/securite + recommandations prioritaires.
+              </p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <aside className="drawer" aria-label="IT Toolbox Drawer">
+        <div className="drawer-list text-sm">
+          <span className="font-semibold">IT-Toolbox Drawer</span>
+          <Link href="/dashboard" className="rounded-xl bg-white/10 px-3 py-2">
+            Dashboard
+          </Link>
+          <Link href="/analyze" className="rounded-xl bg-white/10 px-3 py-2">
+            Analyse
+          </Link>
+          <Link
+            href="/reviews/rev_demo_001"
+            className="rounded-xl bg-white/10 px-3 py-2"
+          >
+            Resultats
+          </Link>
+        </div>
+      </aside>
+    </>
   );
 }

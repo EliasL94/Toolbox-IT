@@ -1,5 +1,19 @@
 # Toolbox-IT
 
+Suite d'outils intelligente pour reviewer l'architecture et la qualité de code des projets pédagogiques (GitHub). Basée sur Next.js 14+ (App Router), TypeScript, et Tailwind CSS.
+
+## Démarrage rapide
+
+```bash
+# Lancer le serveur de développement
+npm run dev
+
+# Vérifier les types et le linting
+npm run check
+
+# Lancer la suite de tests
+npm test
+```
 Socle applicatif du projet Toolbox-IT, base de travail collaborative pour les
 outils d'analyse d'architecture et de qualite de code.
 
@@ -29,22 +43,6 @@ Ce script execute :
 
 - `npm run lint` (verification ESLint)
 - `npm run typecheck` (verification TypeScript stricte)
-
-## Test du parcours principal
-
-Un test d'integration du flux principal est disponible :
-
-```bash
-npm run test
-```
-
-Le test `__tests__/main-user-journey.test.tsx` couvre le parcours etudiant
-principal :
-
-- saisie URL GitHub
-- demarrage de l'analyse
-- transitions de progression
-- affichage du resultat final
 
 ## Structure initiale
 
