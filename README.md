@@ -30,6 +30,22 @@ Ce script execute :
 - `npm run lint` (verification ESLint)
 - `npm run typecheck` (verification TypeScript stricte)
 
+## Test du parcours principal
+
+Un test d'integration du flux principal est disponible :
+
+```bash
+npm run test
+```
+
+Le test `__tests__/main-user-journey.test.tsx` couvre le parcours etudiant
+principal :
+
+- saisie URL GitHub
+- demarrage de l'analyse
+- transitions de progression
+- affichage du resultat final
+
 ## Structure initiale
 
 ```text
