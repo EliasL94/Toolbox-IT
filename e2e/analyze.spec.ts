@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
 /** Session fictive injectée dans chaque test pour bypasser NextAuth */
 const MOCK_SESSION = {
@@ -10,7 +10,7 @@ const MOCK_SESSION = {
  * Injecte un mock de session NextAuth et un mock de la liste des reviews.
  * À appeler en début de chaque test pour éviter la redirection vers /login.
  */
-async function mockAuthAndReviews(page: Parameters<typeof test>[1] extends (args: { page: infer P }) => unknown ? P : never) {
+async function mockAuthAndReviews(page: Page) {
   await page.route('**/api/auth/session', (route) =>
     route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(MOCK_SESSION) })
   );
