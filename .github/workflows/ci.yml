@@ -29,6 +29,11 @@ jobs:
     - name: Install Playwright browsers
       run: npx playwright install --with-deps chromium
 
+    - name: Initialize database
+      run: npx prisma db push
+      env:
+        DATABASE_URL: "file:./dev.db"
+
     - name: Run Integration Tests
       run: npx playwright test
       env:
