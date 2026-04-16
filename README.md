@@ -24,11 +24,11 @@ Le socle repose sur des technologies web modernes et robustes :
 
 ## 🚀 3. Guide d'Installation (Lancement Local)
 
-Actuellement, le lancement s'effectue via l'environnement Node.js (une version Docker/conteneurisée pourra être ajoutée ultérieurement mais la stack Node est privilégiée pour le développement).
+Le projet peut être exécuté très simplement via **Docker** (recommandé pour une mise en route rapide) ou via l'environnement **Node.js** classique pour le développement natif.
 
 ### 3.1 Prérequis
-- **Node.js** (LTS recommandé, >= 18.x)
-- **npm** (ou yarn)
+- **Docker & Docker Compose** (pour l'option 1)
+- **Node.js** (LTS recommandé, >= 18.x) et **npm/yarn** (pour l'option 2)
 - **Git**
 
 ### 3.2 Variables d'Environnement
@@ -41,7 +41,20 @@ cp .env.example .env
 - `GEMINI_API_KEY` : Clé API Google Studio pour faire fonctionner l'IA.
 - `NEXTAUTH_SECRET` : Chaîne longue et aléatoire chiffrant les sessions (ex: lancez `openssl rand -base64 32` dans votre terminal).
 
-### 3.3 Étapes de Lancement
+### 3.3 Option A : Lancement via Docker (Recommandé)
+
+Le projet intègre un `Dockerfile` optimisé (Next.js standalone) et un `docker-compose.yml`.
+
+```bash
+# 1. Construire et lancer le conteneur en arrière-plan
+docker-compose up -d --build
+
+# 2. Arrêter le conteneur l'application
+docker-compose down
+```
+*Note : La migration de base de données s'exécute automatiquement au démarrage du conteneur. Les données SQLite sont persistées via le volume `sqlite_data`.*
+
+### 3.4 Option B : Lancement Natif (Node.js)
 
 ```bash
 # 1. Installez les paquets (dépendances)
@@ -53,7 +66,8 @@ npx prisma db push
 # 3. Lancez le serveur de développement
 npm run dev
 ```
-L'application est à présent disponible sur [http://localhost:3000](http://localhost:3000).
+
+L'application est à présent disponible sur [http://localhost:3000](http://localhost:3000) (quelle que soit l'option choisie).
 
 ---
 
