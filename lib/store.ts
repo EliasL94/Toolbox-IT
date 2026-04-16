@@ -5,8 +5,6 @@ const globalForPrisma = globalThis as unknown as { prisma: PrismaClient };
 export const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-// --- AUTHS & USERS ---
-
 export interface User {
   id: string;
   name: string;
@@ -38,8 +36,6 @@ export function generateUserId(): string {
   // Optionnel maintenant car Prisma gère l'UUID automatiquement
   return `usr_${Date.now()}`;
 }
-
-// --- REVIEWS ---
 
 export interface ReviewReport {
   architecture: {
@@ -134,7 +130,6 @@ export async function getAllReviews(userId?: string): Promise<ReviewData[]> {
 }
 
 export function generateReviewId(): string {
-  // Utilisé par le code métier pour fixer l'ID manuellement avant insertion.
   return `rev_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
 }
 

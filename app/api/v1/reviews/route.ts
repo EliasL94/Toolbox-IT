@@ -14,12 +14,6 @@ import {
 const GITHUB_URL_REGEX =
   /^https:\/\/github\.com\/([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+?)(?:\.git)?\/?$/;
 
-/**
- * POST /api/v1/reviews
- *
- * Reçoit une URL GitHub, récupère l'arborescence via l'API GitHub,
- * envoie le tout à Gemini pour analyse, stocke les résultats.
- */
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
@@ -42,7 +36,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { repository_url, branch = "main" } = body;
 
-    // 1. Validation de l'URL
     if (!repository_url || typeof repository_url !== "string") {
       return NextResponse.json(
         { error: "Le champ repository_url est requis." },
@@ -65,7 +58,6 @@ export async function POST(request: NextRequest) {
 
     const [, owner, repo] = match;
 
-    // 2. Vérifier que Gemini est configuré
     if (!process.env.GEMINI_API_KEY) {
       return NextResponse.json(
         { error: "Clé API Gemini non configurée sur le serveur." },
@@ -73,152 +65,146 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. Vérifier si une analyse existe déjà pour ce repo et cette branche (pour écraser)
-    const existingReviews = await getAllReviews(userId);
-    const existingReview = existingReviews.find(
-      (r) => r.repository_url === cleanUrl && r.branch === branch
-    );
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(controller) {
+        const sendMsg = (step: string, progress: number, extra: Record<string, unknown> = {}) => {
+          controller.enqueue(
+            encoder.encode(JSON.stringify({ step, progress, ...extra }) + "\n")
+          );
+        };
 
-    const reviewId = existingReview ? existingReview.id : generateReviewId();
+        let reviewId = "";
+        try {
+          sendMsg("Initialisation de l'analyse...", 10);
+          
+          const existingReviews = await getAllReviews(userId);
+          const existingReview = existingReviews.find(
+            (r) => r.repository_url === cleanUrl && r.branch === branch
+          );
 
-    await saveReview({
-      id: reviewId,
-      userId,
-      status: "processing",
-      repository_url: cleanUrl,
-      branch,
-      created_at: existingReview
-        ? existingReview.created_at
-        : new Date().toISOString(),
-    });
+          reviewId = existingReview ? existingReview.id : generateReviewId();
 
-    // 4. Récupérer l'arborescence GitHub
-    const githubToken = process.env.GITHUB_TOKEN;
-    const headers: Record<string, string> = {
-      Accept: "application/vnd.github.v3+json",
-      "User-Agent": "Toolbox-IT/1.0",
-    };
+          await saveReview({
+            id: reviewId,
+            userId,
+            status: "processing",
+            repository_url: cleanUrl,
+            branch,
+            created_at: existingReview
+              ? existingReview.created_at
+              : new Date().toISOString(),
+          });
 
-    if (githubToken) {
-      headers["Authorization"] = `Bearer ${githubToken}`;
-    }
+          sendMsg("Récupération de l'arborescence GitHub...", 25);
+          const githubToken = process.env.GITHUB_TOKEN;
+          const headers: Record<string, string> = {
+            Accept: "application/vnd.github.v3+json",
+            "User-Agent": "Toolbox-IT/1.0",
+          };
+          if (githubToken) {
+            headers["Authorization"] = `Bearer ${githubToken}`;
+          }
 
-    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
-    const ghResponse = await fetch(apiUrl, { headers });
+          const apiUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees/${branch}?recursive=1`;
+          const ghResponse = await fetch(apiUrl, { headers });
 
-    if (!ghResponse.ok) {
-      const errorMessages: Record<number, string> = {
-        404: `Dépôt "${owner}/${repo}" introuvable ou privé. Vérifiez l'URL.`,
-        403: "Accès refusé par GitHub. Token expiré ou manquant.",
-        409: `Le dépôt "${owner}/${repo}" semble vide (aucun commit).`,
-        429: "Limite de requêtes GitHub atteinte. Réessayez dans quelques minutes.",
-      };
+          if (!ghResponse.ok) {
+            const errorMessages: Record<number, string> = {
+              404: `Dépôt "${owner}/${repo}" introuvable ou privé. Vérifiez l'URL.`,
+              403: "Accès refusé par GitHub. Token expiré ou manquant.",
+              409: `Le dépôt "${owner}/${repo}" semble vide (aucun commit).`,
+              429: "Limite de requêtes GitHub atteinte. Réessayez dans quelques minutes.",
+            };
+            const errorText = errorMessages[ghResponse.status] ?? `Erreur GitHub (code ${ghResponse.status}).`;
+            
+            await saveReview({
+              id: reviewId,
+              userId,
+              status: "failed",
+              repository_url: cleanUrl,
+              branch,
+              created_at: new Date().toISOString(),
+              error_message: errorText,
+            });
 
-      await saveReview({
-        id: reviewId,
-        userId,
-        status: "failed",
-        repository_url: cleanUrl,
-        branch,
-        created_at: new Date().toISOString(),
-        error_message:
-          errorMessages[ghResponse.status] ??
-          `Erreur GitHub (code ${ghResponse.status}).`,
-      });
+            sendMsg(errorText, 0, { error: errorText });
+            controller.close();
+            return;
+          }
 
-      return NextResponse.json(
-        {
-          id: reviewId,
-          error:
-            errorMessages[ghResponse.status] ??
-            `Erreur GitHub inattendue (code ${ghResponse.status}).`,
-        },
-        { status: ghResponse.status === 404 ? 404 : 502 }
-      );
-    }
+          sendMsg("Lecture des fichiers terminée...", 45);
+          const ghData = await ghResponse.json();
+          const tree: { path: string; type: string }[] = ghData.tree ?? [];
 
-    const ghData = await ghResponse.json();
-    const tree: { path: string; type: string }[] = ghData.tree ?? [];
+          const treeText = tree
+            .map((node: { path: string; type: string }) =>
+              `${node.type === "tree" ? "📁" : "📄"} ${node.path}`
+            )
+            .join("\n");
 
-    // 5. Construire l'arborescence textuelle pour Gemini
-    const treeText = tree
-      .map((node: { path: string; type: string }) =>
-        `${node.type === "tree" ? "📁" : "📄"} ${node.path}`
-      )
-      .join("\n");
+          sendMsg("Analyse par l'IA en cours (cela peut prendre quelques secondes)...", 60);
+          const prompt = buildAnalysisPrompt(cleanUrl, branch, treeText);
+          const rawText = await generateWithRetry(prompt);
 
-    // 6. Appel Gemini pour l'analyse (avec retry + fallback automatique)
-    const prompt = buildAnalysisPrompt(cleanUrl, branch, treeText);
-    const rawText = await generateWithRetry(prompt);
+          sendMsg("Génération du rapport détaillée...", 85);
+          let report: ReviewReport;
+          try {
+            const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) {
+              throw new Error("Pas de JSON trouvé dans la réponse Gemini.");
+            }
+            report = JSON.parse(jsonMatch[0]) as ReviewReport;
+          } catch (parseError) {
+            console.error("[Reviews] Erreur parsing Gemini:", parseError);
+            await saveReview({
+               id: reviewId, userId, status: "failed", repository_url: cleanUrl, branch, created_at: new Date().toISOString(),
+               error_message: "L'IA n'a pas retourné un format analysable. Veuillez réessayer."
+            });
+            sendMsg("Erreur de format IA", 0, { error: "Erreur de format dans la réponse de l'IA." });
+            controller.close();
+            return;
+          }
 
-    // 7. Parser la réponse JSON de Gemini
-    let report: ReviewReport;
-    try {
-      // Nettoyer le texte (Gemini peut entourer le JSON de ```json ... ```)
-      const jsonMatch = rawText.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) {
-        throw new Error("Pas de JSON trouvé dans la réponse Gemini.");
-      }
-      report = JSON.parse(jsonMatch[0]) as ReviewReport;
-    } catch (parseError) {
-      console.error("[Reviews] Erreur parsing Gemini:", parseError);
-      console.error("[Reviews] Réponse brute:", rawText);
+          sendMsg("Finalisation et sauvegarde...", 95);
+          await saveReview({
+            id: reviewId,
+            userId,
+            status: "completed",
+            repository_url: cleanUrl,
+            branch,
+            created_at: existingReview
+              ? existingReview.created_at
+              : new Date().toISOString(),
+            completed_at: new Date().toISOString(),
+            report,
+          });
 
-      await saveReview({
-        id: reviewId,
-        userId,
-        status: "failed",
-        repository_url: cleanUrl,
-        branch,
-        created_at: new Date().toISOString(),
-        error_message:
-          "L'IA n'a pas retourné un format analysable. Veuillez réessayer.",
-      });
+          sendMsg("Terminé", 100, { id: reviewId });
+          controller.close();
 
-      return NextResponse.json(
-        {
-          id: reviewId,
-          error: "Erreur de format dans la réponse de l'IA.",
-        },
-        { status: 502 }
-      );
-    }
-
-    // 8. Sauvegarder le résultat final
-    await saveReview({
-      id: reviewId,
-      userId,
-      status: "completed",
-      repository_url: cleanUrl,
-      branch,
-      created_at: existingReview
-        ? existingReview.created_at
-        : new Date().toISOString(),
-      completed_at: new Date().toISOString(),
-      report,
-    });
-
-    return NextResponse.json(
-      {
-        id: reviewId,
-        status: "completed",
-        repository_url: cleanUrl,
-        links: { status_url: `/api/v1/reviews/${reviewId}` },
+        } catch (error: unknown) {
+          console.error("[Reviews Stream Error]:", error);
+          const errorMsg = (error as Error)?.message ?? "";
+          let finalError = "Erreur interne du serveur lors de l'analyse.";
+          if (errorMsg.includes("503") || errorMsg.includes("UNAVAILABLE") || errorMsg.includes("high demand")) {
+             finalError = "Le service IA est temporairement surchargé. Veuillez réessayer.";
+          }
+          sendMsg(finalError, 0, { error: finalError });
+          controller.close();
+        }
       },
-      { status: 201 }
-    );
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "application/x-ndjson",
+        "Cache-Control": "no-cache",
+        "Connection": "keep-alive"
+      },
+    });
+
   } catch (error) {
-    console.error("[Reviews POST] Erreur inattendue:", error);
-
-    // Détecter les erreurs Gemini 503 (surcharge)
-    const errorMsg = (error as Error)?.message ?? "";
-    if (errorMsg.includes("503") || errorMsg.includes("UNAVAILABLE") || errorMsg.includes("high demand")) {
-      return NextResponse.json(
-        { error: "Le service IA est temporairement surchargé. Veuillez réessayer dans quelques secondes." },
-        { status: 503 }
-      );
-    }
-
     return NextResponse.json(
       { error: "Erreur interne du serveur. Veuillez réessayer." },
       { status: 500 }

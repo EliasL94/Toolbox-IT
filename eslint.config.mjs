@@ -5,6 +5,13 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    rules: {
+      "complexity": ["warn", 15],
+      "max-depth": ["warn", 4],
+      "max-lines": ["warn", { "max": 350, "skipBlankLines": true, "skipComments": true }]
+    }
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:
