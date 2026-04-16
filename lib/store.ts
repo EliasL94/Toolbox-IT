@@ -101,17 +101,17 @@ export async function saveReview(review: ReviewData) {
   }
 }
 
-function mapPrismaReview(pr: any): ReviewData {
+function mapPrismaReview(pr: Record<string, unknown>): ReviewData {
   return {
-    id: pr.id,
-    userId: pr.userId,
-    status: pr.status as any,
-    repository_url: pr.repository_url,
-    branch: pr.branch,
-    created_at: pr.created_at.toISOString(),
-    completed_at: pr.completed_at ? pr.completed_at.toISOString() : undefined,
-    report: pr.report ? JSON.parse(pr.report) : undefined,
-    error_message: pr.error_message || undefined,
+    id: pr.id as string,
+    userId: pr.userId as string,
+    status: pr.status as ReviewData['status'],
+    repository_url: pr.repository_url as string,
+    branch: pr.branch as string,
+    created_at: (pr.created_at as Date).toISOString(),
+    completed_at: pr.completed_at ? (pr.completed_at as Date).toISOString() : undefined,
+    report: pr.report ? JSON.parse(pr.report as string) : undefined,
+    error_message: (pr.error_message as string) || undefined,
   };
 }
 

@@ -10,7 +10,7 @@ test('Lancer une analyse complète avec succès', async ({ page }) => {
       
       const stream = new ReadableStream({
         async start(controller) {
-          function sendObj(obj: any) {
+          function sendObj(obj: Record<string, unknown>) {
              controller.enqueue(encoder.encode(JSON.stringify(obj) + '\n'));
           }
 
@@ -26,7 +26,7 @@ test('Lancer une analyse complète avec succès', async ({ page }) => {
       return route.fulfill({
         status: 200,
         headers: { 'Content-Type': 'application/x-ndjson' },
-        body: stream as any,
+        body: stream as unknown as string,
       });
     }
     // Pour un éventuel GET, on passe
@@ -66,7 +66,7 @@ test('Parcours d\'Analyse complet avec affichage de rapport', async ({ page }) =
           }, 300);
         }
       });
-      return route.fulfill({ status: 200, headers: { 'Content-Type': 'application/x-ndjson' }, body: stream as any });
+      return route.fulfill({ status: 200, headers: { 'Content-Type': 'application/x-ndjson' }, body: stream as unknown as string });
     }
     return route.continue();
   });

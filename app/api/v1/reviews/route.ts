@@ -14,12 +14,16 @@ import {
 const GITHUB_URL_REGEX =
   /^https:\/\/github\.com\/([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+?)(?:\.git)?\/?$/;
 
+function isAIOverloadError(msg: string) {
+  return msg.includes("503") || msg.includes("UNAVAILABLE") || msg.includes("high demand");
+}
+
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (!session?.user) {
     return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
   }
-  const userId = (session.user as any).id;
+  const userId = (session.user as { id: string }).id;
   
   const reviews = await getAllReviews(userId);
   return NextResponse.json(reviews, { status: 200 });
@@ -31,7 +35,7 @@ export async function POST(request: NextRequest) {
     if (!session?.user) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
-    const userId = (session.user as any).id;
+    const userId = (session.user as { id: string }).id;
 
     const body = await request.json();
     const { repository_url, branch = "main" } = body;
@@ -116,7 +120,7 @@ export async function POST(request: NextRequest) {
               409: `Le dépôt "${owner}/${repo}" semble vide (aucun commit).`,
               429: "Limite de requêtes GitHub atteinte. Réessayez dans quelques minutes.",
             };
-            const errorText = errorMessages[ghResponse.status] ?? `Erreur GitHub (code ${ghResponse.status}).`;
+            const errorText = errorMessages[ghResponse.status as keyof typeof errorMessages] ?? `Erreur GitHub (code ${ghResponse.status}).`;
             
             await saveReview({
               id: reviewId,
@@ -187,7 +191,7 @@ export async function POST(request: NextRequest) {
           console.error("[Reviews Stream Error]:", error);
           const errorMsg = (error as Error)?.message ?? "";
           let finalError = "Erreur interne du serveur lors de l'analyse.";
-          if (errorMsg.includes("503") || errorMsg.includes("UNAVAILABLE") || errorMsg.includes("high demand")) {
+          if (isAIOverloadError(errorMsg)) {
              finalError = "Le service IA est temporairement surchargé. Veuillez réessayer.";
           }
           sendMsg(finalError, 0, { error: finalError });
@@ -204,7 +208,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Erreur interne du serveur. Veuillez réessayer." },
       { status: 500 }

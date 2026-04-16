@@ -73,6 +73,25 @@ export default function AnalyzePage() {
       }
 
       // Lecture du flux de données en continu (NDJSON)
+      const processStreamLine = (line: string) => {
+        if (!line.trim()) return;
+        try {
+          const data = JSON.parse(line);
+          if (data.error) {
+            setError(data.error);
+            setIsAnalyzing(false);
+            return;
+          }
+          if (data.step) setStepText(data.step);
+          if (data.progress !== undefined) setProgress(data.progress);
+          if (data.progress === 100 && data.id) {
+            router.push(`/reviews/${data.id}`);
+          }
+        } catch (err) {
+          console.error('Erreur parsing chunk JSON', line, err);
+        }
+      };
+
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
@@ -83,30 +102,10 @@ export default function AnalyzePage() {
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
-        
-        // On conserve le dernier fragment si non complet
         buffer = lines.pop() || '';
 
         for (const line of lines) {
-          if (!line.trim()) continue;
-          try {
-            const data = JSON.parse(line);
-            
-            if (data.error) {
-              setError(data.error);
-              setIsAnalyzing(false);
-              return;
-            }
-
-            if (data.step) setStepText(data.step);
-            if (data.progress !== undefined) setProgress(data.progress);
-
-            if (data.progress === 100 && data.id) {
-              router.push(`/reviews/${data.id}`);
-            }
-          } catch (err) {
-            console.error('Erreur parsing chunk JSON', line, err);
-          }
+          processStreamLine(line);
         }
       }
 

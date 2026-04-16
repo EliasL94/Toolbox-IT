@@ -42,7 +42,7 @@ export default function LoginPage() {
         router.push(callbackUrl);
         router.refresh();
       }
-    } catch (err) {
+    } catch {
       setError('Une erreur est survenue.');
       setIsLoading(false);
     }

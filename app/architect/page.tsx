@@ -102,6 +102,38 @@ export default function ArchitectPage() {
         throw new Error('Pas de stream disponible.');
       }
 
+      const processSSELine = (line: string) => {
+        if (!line.startsWith('data: ')) return;
+        const payload = line.slice(6);
+        if (payload === '[DONE]') return;
+        try {
+          const parsed = JSON.parse(payload);
+          if (parsed.text) {
+            setMessages(prev => {
+              const updated = [...prev];
+              const lastMsg = updated[updated.length - 1];
+              updated[updated.length - 1] = {
+                ...lastMsg,
+                content: lastMsg.content + parsed.text,
+              };
+              return updated;
+            });
+          }
+          if (parsed.error) {
+            setMessages(prev => {
+              const updated = [...prev];
+              updated[updated.length - 1] = {
+                role: 'assistant',
+                content: `⚠️ ${parsed.error}`,
+              };
+              return updated;
+            });
+          }
+        } catch {
+          // Ignorer les lignes mal formées
+        }
+      };
+
       let buffer = '';
 
       while (true) {
@@ -113,37 +145,7 @@ export default function ArchitectPage() {
         buffer = lines.pop() ?? '';
 
         for (const line of lines) {
-          if (!line.startsWith('data: ')) continue;
-          const payload = line.slice(6);
-
-          if (payload === '[DONE]') break;
-
-          try {
-            const parsed = JSON.parse(payload);
-            if (parsed.text) {
-              setMessages(prev => {
-                const updated = [...prev];
-                const lastMsg = updated[updated.length - 1];
-                updated[updated.length - 1] = {
-                  ...lastMsg,
-                  content: lastMsg.content + parsed.text,
-                };
-                return updated;
-              });
-            }
-            if (parsed.error) {
-              setMessages(prev => {
-                const updated = [...prev];
-                updated[updated.length - 1] = {
-                  role: 'assistant',
-                  content: `⚠️ ${parsed.error}`,
-                };
-                return updated;
-              });
-            }
-          } catch {
-            // Ignorer les lignes mal formées
-          }
+          processSSELine(line);
         }
       }
     } catch {
