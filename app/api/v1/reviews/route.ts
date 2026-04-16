@@ -1,4 +1,3 @@
-/** Route API — Analyse de dépôts GitHub via Gemini */
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
@@ -10,14 +9,16 @@ import {
   getAllReviews,
   type ReviewReport,
 } from "@/lib/store";
-
-/** Regex pour valider une URL GitHub */
-const GITHUB_URL_REGEX =
-  /^https:\/\/github\.com\/([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+?)(?:\.git)?\/?$/;
+import { z } from 'zod';
 
 function isAIOverloadError(msg: string) {
   return msg.includes("503") || msg.includes("UNAVAILABLE") || msg.includes("high demand");
 }
+
+const reviewRequestSchema = z.object({
+  repository_url: z.string().trim().url().regex(/^https:\/\/github\.com\/[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/, "URL GitHub invalide. Format attendu : https://github.com/utilisateur/projet"),
+  branch: z.string().min(1).max(100).default("main"),
+});
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -38,27 +39,22 @@ export async function POST(request: NextRequest) {
     }
     const userId = (session.user as { id: string }).id;
 
-    const body = await request.json();
-    const { repository_url, branch = "main" } = body;
+    const rawBody = await request.json();
+    const result = reviewRequestSchema.safeParse(rawBody);
 
-    if (!repository_url || typeof repository_url !== "string") {
+    if (!result.success) {
       return NextResponse.json(
-        { error: "Le champ repository_url est requis." },
+        { error: result.error.issues[0].message },
         { status: 400 }
       );
     }
 
-    const cleanUrl = repository_url.trim().replace(/\.git\/?$/, "");
-    const match = GITHUB_URL_REGEX.exec(cleanUrl);
+    const { repository_url, branch } = result.data;
+    const cleanUrl = repository_url.replace(/\.git\/?$/, "");
+    const match = /^https:\/\/github\.com\/([a-zA-Z0-9_.-]+)\/([a-zA-Z0-9_.-]+?)$/.exec(cleanUrl);
 
     if (!match) {
-      return NextResponse.json(
-        {
-          error:
-            "URL GitHub invalide. Format attendu : https://github.com/utilisateur/projet",
-        },
-        { status: 400 }
-      );
+        return NextResponse.json({ error: "URL GitHub invalide" }, { status: 400 });
     }
 
     const [, owner, repo] = match;

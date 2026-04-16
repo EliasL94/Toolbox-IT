@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
     // Avoid workspace auto-detection on parent lockfiles.
     root: projectRoot,
   },
+  output: 'standalone',
 };
 
 export default nextConfig;

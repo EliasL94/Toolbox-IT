@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
@@ -8,7 +8,7 @@ import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
 import { Cpu, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
@@ -49,6 +49,57 @@ export default function LoginPage() {
   };
 
   return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="p-3 text-sm text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-400 rounded-xl flex items-center gap-2 border border-red-200 dark:border-red-900/50">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          {error}
+        </div>
+      )}
+
+      <div className="space-y-2">
+        <label className="text-sm font-semibold text-slate-900 dark:text-slate-200 block">Email</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          disabled={isLoading}
+          placeholder="votre@email.com"
+          className="w-full rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 px-4 py-3 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors disabled:opacity-50"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="text-sm font-semibold text-slate-900 dark:text-slate-200 block">Mot de passe</label>
+        </div>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={isLoading}
+          placeholder="••••••••"
+          className="w-full rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 px-4 py-3 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors disabled:opacity-50"
+        />
+      </div>
+
+      <Button type="submit" disabled={isLoading} className="w-full group">
+        {isLoading ? (
+          <span className="flex items-center justify-center gap-2">
+            <Loader2 className="h-5 w-5 animate-spin" /> Connexion...
+          </span>
+        ) : (
+          <span className="flex items-center justify-center gap-2">
+            Se connecter <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </span>
+        )}
+      </Button>
+    </form>
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className="min-h-screen flex items-center justify-center py-20 px-4">
       {/* Background Glow */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
@@ -69,52 +120,9 @@ export default function LoginPage() {
           {/* Subtle top border gradient */}
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-violet-500 to-indigo-500"></div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {error && (
-              <div className="p-3 text-sm text-red-600 bg-red-100 dark:bg-red-900/30 dark:text-red-400 rounded-xl flex items-center gap-2 border border-red-200 dark:border-red-900/50">
-                <AlertCircle className="h-4 w-4 shrink-0" />
-                {error}
-              </div>
-            )}
-
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-900 dark:text-slate-200 block">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={isLoading}
-                placeholder="votre@email.com"
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 px-4 py-3 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors disabled:opacity-50"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <label className="text-sm font-semibold text-slate-900 dark:text-slate-200 block">Mot de passe</label>
-              </div>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={isLoading}
-                placeholder="••••••••"
-                className="w-full rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 px-4 py-3 text-sm focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors disabled:opacity-50"
-              />
-            </div>
-
-            <Button type="submit" disabled={isLoading} className="w-full group">
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Loader2 className="h-5 w-5 animate-spin" /> Connexion...
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  Se connecter <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </span>
-              )}
-            </Button>
-          </form>
+          <Suspense fallback={<div className="flex justify-center p-4"><Loader2 className="animate-spin" /></div>}>
+            <LoginForm />
+          </Suspense>
 
           <div className="mt-6 text-center text-sm text-slate-600 dark:text-slate-400">
             Nouveau sur Toolbox-IT ?{' '}
