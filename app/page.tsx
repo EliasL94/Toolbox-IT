@@ -30,12 +30,18 @@ export default async function Home() {
   const totalAnalyses = reviews.length;
   const totalProjects = new Set(reviews.map(r => r.repository_url)).size;
   
+  type LegacyReport = {
+    security?: { score?: number };
+    code_quality?: { score?: number };
+  };
+
   let averageScore: string | number = "-";
   if (reviews.length > 0) {
     const sum = reviews.reduce((acc, r) => {
       const sArch = r.report!.architecture?.score || 0;
-      const sSecA = r.report!.security_archi?.score || (r.report! as any).security?.score || 0;
-      const sSecC = r.report!.security_code?.score || (r.report! as any).code_quality?.score || 0;
+      const legacy = r.report! as LegacyReport;
+      const sSecA = r.report!.security_archi?.score || legacy.security?.score || 0;
+      const sSecC = r.report!.security_code?.score || legacy.code_quality?.score || 0;
       const avg = (sArch + sSecA + sSecC) / 3;
       return acc + avg;
     }, 0);
