@@ -45,13 +45,13 @@ export interface ReviewReport {
     strengths: string[];
     improvements: string[];
   };
-  code_quality: {
+  security_archi: {
     score: number;
     summary: string;
     strengths: string[];
-    issues: string[];
+    details: string[];
   };
-  security: {
+  security_code: {
     score: number;
     summary: string;
     issues_found: number;

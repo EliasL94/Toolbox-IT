@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Button } from '@/components/ui/Button';
-import { GitBranch, CheckCircle2, AlertTriangle, XCircle, ArrowLeft, Loader2, Component, FileCode2, Lock } from 'lucide-react';
+import { GitBranch, CheckCircle2, AlertTriangle, XCircle, ArrowLeft, Loader2, Component, FileCode2, Lock, ShieldCheck } from 'lucide-react';
 import type { ReviewData } from '@/lib/store';
 
 /** Composant pour afficher une barre horizontale de score colorée */
@@ -117,9 +117,13 @@ export default function ReviewPage() {
   }
 
   const { report } = review;
-  const globalScore = Math.round(
-    (report.architecture.score + report.code_quality.score + report.security.score) / 3
-  );
+  
+  // Compatibilité avec les anciens rapports
+  const archScore = report.architecture?.score || 0;
+  const secArchiScore = report.security_archi?.score || (report as any).security?.score || 0;
+  const secCodeScore = report.security_code?.score || (report as any).code_quality?.score || 0;
+
+  const globalScore = Math.round((archScore + secArchiScore + secCodeScore) / 3);
   const globalColor =
     globalScore >= 80
       ? 'text-emerald-500'
@@ -156,7 +160,7 @@ export default function ReviewPage() {
 
         <div className="flex items-center gap-4">
           <div className="text-right">
-            <p className="text-sm font-medium uppercase tracking-wider text-slate-500">Score Global</p>
+            <p className="text-sm font-medium uppercase tracking-wider text-slate-500">Score de Structure</p>
             <p className={`text-4xl font-black ${globalColor}`}>
               {globalScore}<span className="text-2xl text-slate-400">/100</span>
             </p>
@@ -178,7 +182,7 @@ export default function ReviewPage() {
                 <h2 className="text-xl font-bold">Architecture & Structure</h2>
               </div>
             </div>
-            <ScoreBar score={report.architecture.score} />
+            <ScoreBar score={archScore} />
             <p className="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{report.architecture.summary}</p>
             <div className="mt-6 space-y-3">
               {report.architecture.strengths.map((s, i) => (
@@ -196,51 +200,51 @@ export default function ReviewPage() {
             </div>
           </GlassCard>
 
-          {/* Code Quality Section */}
+          {/* Security Architecture Section */}
           <GlassCard className="p-6 sm:p-8">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-violet-100 dark:bg-violet-900/30 text-violet-600 dark:text-violet-400">
-                  <FileCode2 className="h-5 w-5" />
+                <div className="p-2 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                  <ShieldCheck className="h-5 w-5" />
                 </div>
-                <h2 className="text-xl font-bold">Qualité du Code</h2>
+                <h2 className="text-xl font-bold">Sécurité de l&apos;Architecture</h2>
               </div>
             </div>
-            <ScoreBar score={report.code_quality.score} />
-            <p className="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{report.code_quality.summary}</p>
+            <ScoreBar score={secArchiScore} />
+            <p className="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{report.security_archi?.summary || (report as any).security?.summary || "Analyse de sécurité indisponible pour ce format."}</p>
             <div className="mt-6 space-y-3">
-              {report.code_quality.strengths.map((s, i) => (
+              {(report.security_archi?.strengths || (report as any).security?.strengths || []).map((s: string, i: number) => (
                 <div key={i} className="flex gap-3 items-start">
                   <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" />
                   <p className="text-sm text-slate-700 dark:text-slate-300">{s}</p>
                 </div>
               ))}
-              {report.code_quality.issues.map((s, i) => (
+              {(report.security_archi?.details || (report as any).security?.details || []).map((s: string, i: number) => (
                 <div key={i} className="flex gap-3 items-start">
-                  <XCircle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
+                  <AlertTriangle className="h-5 w-5 text-blue-500 mt-0.5 shrink-0" />
                   <p className="text-sm text-slate-700 dark:text-slate-300">{s}</p>
                 </div>
               ))}
             </div>
           </GlassCard>
 
-          {/* Security Section */}
+          {/* Security Implementation Section */}
           <GlassCard className="p-6 sm:p-8">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
+                <div className="p-2 rounded-lg bg-rose-100 dark:bg-rose-900/30 text-rose-600 dark:text-rose-400">
                   <Lock className="h-5 w-5" />
                 </div>
-                <h2 className="text-xl font-bold">Sécurité</h2>
+                <h2 className="text-xl font-bold">Sécurité du Code (Fichiers)</h2>
               </div>
             </div>
-            <ScoreBar score={report.security.score} />
-            <p className="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{report.security.summary}</p>
-            {report.security.details.length > 0 && (
+            <ScoreBar score={secCodeScore} />
+            <p className="mt-4 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{report.security_code?.summary || (report as any).code_quality?.summary || "Analyse détaillée indisponible."}</p>
+            {((report.security_code?.details || (report as any).code_quality?.issues || []) as string[]).length > 0 && (
               <div className="mt-6 space-y-3">
-                {report.security.details.map((s, i) => (
+                {((report.security_code?.details || (report as any).code_quality?.issues || []) as string[]).map((s, i) => (
                   <div key={i} className="flex gap-3 items-start">
-                    {report.security.issues_found > 0 ? (
+                    {(report.security_code?.issues_found || 0) > 0 || (report as any).code_quality ? (
                       <AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5 shrink-0" />
                     ) : (
                       <CheckCircle2 className="h-5 w-5 text-emerald-500 mt-0.5 shrink-0" />

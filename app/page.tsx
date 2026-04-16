@@ -33,7 +33,10 @@ export default async function Home() {
   let averageScore: string | number = "-";
   if (reviews.length > 0) {
     const sum = reviews.reduce((acc, r) => {
-      const avg = (r.report!.architecture.score + r.report!.code_quality.score + r.report!.security.score) / 3;
+      const sArch = r.report!.architecture?.score || 0;
+      const sSecA = r.report!.security_archi?.score || (r.report! as any).security?.score || 0;
+      const sSecC = r.report!.security_code?.score || (r.report! as any).code_quality?.score || 0;
+      const avg = (sArch + sSecA + sSecC) / 3;
       return acc + avg;
     }, 0);
     averageScore = Math.round(sum / reviews.length);

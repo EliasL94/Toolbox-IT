@@ -109,7 +109,10 @@ export default function DashboardPage() {
               }
 
               if (project.report) {
-                 score = Math.round((project.report.architecture.score + project.report.code_quality.score + project.report.security.score) / 3);
+                 const sArch = project.report.architecture?.score || 0;
+                 const sSecA = project.report.security_archi?.score || (project.report as any).security?.score || 0;
+                 const sSecC = project.report.security_code?.score || (project.report as any).code_quality?.score || 0;
+                 score = Math.round((sArch + sSecA + sSecC) / 3);
                  danger = score < 50;
               }
 
