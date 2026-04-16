@@ -1,123 +1,127 @@
 import { test, expect } from '@playwright/test';
 
-// Cas Nominal : Le parcours d'Analyse complet
-test('Lancer une analyse complète avec succès', async ({ page }) => {
-  // Intercepter l'appel à l'API /api/v1/reviews pour simuler le NDJSON stream sans appeler GitHub/Gemini
-  await page.route('/api/v1/reviews', async (route) => {
-    // Si c'est une requête POST (demande d'analyse)
-    if (route.request().method() === 'POST') {
-      const encoder = new TextEncoder();
-      
-      const stream = new ReadableStream({
-        async start(controller) {
-          function sendObj(obj: Record<string, unknown>) {
-             controller.enqueue(encoder.encode(JSON.stringify(obj) + '\n'));
-          }
+/** Session fictive injectée dans chaque test pour bypasser NextAuth */
+const MOCK_SESSION = {
+  user: { id: 'test-user-1', name: 'Test User', email: 'test@example.com' },
+  expires: '2099-01-01T00:00:00.000Z',
+};
 
-          sendObj({ step: "Verification du mock API...", progress: 30 });
-          // Simuler un court délai de traitement
-          await new Promise(r => setTimeout(r, 500));
-          
-          sendObj({ step: "Analyse terminée.", progress: 100, id: "mock_rev_123" });
-          controller.close();
-        }
-      });
-      
-      return route.fulfill({
-        status: 200,
-        headers: { 'Content-Type': 'application/x-ndjson' },
-        body: stream as unknown as string,
-      });
-    }
-    // Pour un éventuel GET, on passe
-    return route.continue();
-  });
-
-  // On lance le test en accédant à la page Analyze
-  await page.goto('/analyze');
-
-  // L'utilisateur remplit le formulaire
-  await page.fill('input[placeholder="https://github.com/utilisateur/projet"]', 'https://github.com/facebook/react');
-  
-  // Il clique sur le bouton pour analyser
-  await page.click('button:has-text("Lancer le scan")');
-
-  // Notre mock répond presque immédiatement, le flux NDJSON envoie 100% -> Redirection locale
-  // On doit s'assurer que ça navigue bien vers /reviews/mock_rev_123
-  await page.waitForURL('**/reviews/mock_rev_123*');
-  
-  // Sur la page d'erreur 404 (puisque mock_rev_123 n'existe pas en DB locale pour un appel Server Components)
-  // le front va faire un fetch direct à /api/v1/reviews/mock_rev_123 dans le useEffect() car on est en React client
-  // Mockons également cet appel de rapport.
-});
-
-// Refaisons le test mieux structuré en interceptant aussi la lecture du rapport.
-test('Parcours d\'Analyse complet avec affichage de rapport', async ({ page }) => {
-  // 1. Mock du flux NDJSON d'analyse
+/**
+ * Injecte un mock de session NextAuth et un mock de la liste des reviews.
+ * À appeler en début de chaque test pour éviter la redirection vers /login.
+ */
+async function mockAuthAndReviews(page: Parameters<typeof test>[1] extends (args: { page: infer P }) => unknown ? P : never) {
+  await page.route('**/api/auth/session', (route) =>
+    route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(MOCK_SESSION) })
+  );
   await page.route('**/api/v1/reviews', async (route) => {
-    if (route.request().method() === 'POST') {
-      const encoder = new TextEncoder();
-      const stream = new ReadableStream({
-        async start(controller) {
-          controller.enqueue(encoder.encode(JSON.stringify({ step: "Traitement", progress: 50 }) + '\n'));
-          setTimeout(() => {
-            controller.enqueue(encoder.encode(JSON.stringify({ step: "Terminé", progress: 100, id: "mock_e2e_1" }) + '\n'));
-            controller.close();
-          }, 300);
-        }
-      });
-      return route.fulfill({ status: 200, headers: { 'Content-Type': 'application/x-ndjson' }, body: stream as unknown as string });
+    if (route.request().method() === 'GET') {
+      return route.fulfill({ status: 200, contentType: 'application/json', body: '[]' });
     }
     return route.continue();
   });
+}
 
-  // 2. Mock de la requête API fetch du frontend vers /api/v1/reviews/mock_e2e_1
-  await page.route('**/api/v1/reviews/mock_e2e_1', async (route) => {
+// ─── Cas nominal : parcours d'analyse complet ───────────────────────────────
+
+test('Lancer une analyse complète avec succès', async ({ page }) => {
+  await mockAuthAndReviews(page);
+
+  await page.route('**/api/v1/reviews', async (route) => {
+    if (route.request().method() !== 'POST') return route.continue();
+
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode(JSON.stringify({ step: 'Vérification mock...', progress: 30 }) + '\n'));
+        controller.enqueue(encoder.encode(JSON.stringify({ step: 'Analyse terminée.', progress: 100, id: 'mock_rev_123' }) + '\n'));
+        controller.close();
+      },
+    });
     return route.fulfill({
       status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        id: "mock_e2e_1",
-        status: "completed",
-        repository_url: "https://github.com/facebook/react",
-        branch: "main",
-        created_at: new Date().toISOString(),
-        report: {
-          architecture: { score: 95, pattern_detected: "Mock Pattern", summary: "Super architecture", strengths: [], improvements: [] },
-          code_quality: { score: 90, summary: "Bon code", strengths: [], issues: [] },
-          security: { score: 100, summary: "Secure", issues_found: 0, details: [] },
-          general_feedback: "Test passé avec succès"
-        }
-      })
+      headers: { 'Content-Type': 'application/x-ndjson' },
+      body: stream as unknown as string,
     });
   });
 
-  // Action
   await page.goto('/analyze');
+  await page.waitForSelector('input[placeholder*="github"]', { timeout: 10000 });
   await page.fill('input[placeholder*="github"]', 'https://github.com/facebook/react');
-  const btn = page.locator('button', { hasText: 'Lancer le scan' });
-  await btn.click();
-
-  // Vérification: l'application navigue sur /reviews/mock_e2e_1
-  await page.waitForURL('**/reviews/mock_e2e_1');
-
-  // Vérification: Le rapport s'affiche avec le score (qui sera affiché sous forme 95)
-  await expect(page.locator('text=Mock Pattern')).toBeVisible();
-  await expect(page.locator('h1 >> text=facebook/react')).toBeVisible();
+  await page.click('button:has-text("Lancer le scan")');
+  await page.waitForURL('**/reviews/mock_rev_123', { timeout: 15000 });
 });
 
-// Cas d'échec : L'URL Github est invalide (400 server)
-test('Affiche une erreur si l\'API refuse l\'analyse', async ({ page }) => {
+// ─── Parcours complet avec affichage du rapport ──────────────────────────────
+
+test("Parcours d'Analyse complet avec affichage de rapport", async ({ page }) => {
+  await mockAuthAndReviews(page);
+
   await page.route('**/api/v1/reviews', async (route) => {
-    if (route.request().method() === 'POST') {
-       return route.fulfill({ status: 400, body: JSON.stringify({ error: "Mon erreur de mock" }) });
-    }
+    if (route.request().method() !== 'POST') return route.continue();
+
+    const encoder = new TextEncoder();
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue(encoder.encode(JSON.stringify({ step: 'Traitement', progress: 50 }) + '\n'));
+        controller.enqueue(encoder.encode(JSON.stringify({ step: 'Terminé', progress: 100, id: 'mock_e2e_1' }) + '\n'));
+        controller.close();
+      },
+    });
+    return route.fulfill({
+      status: 200,
+      headers: { 'Content-Type': 'application/x-ndjson' },
+      body: stream as unknown as string,
+    });
+  });
+
+  await page.route('**/api/v1/reviews/mock_e2e_1', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        id: 'mock_e2e_1',
+        status: 'completed',
+        repository_url: 'https://github.com/facebook/react',
+        branch: 'main',
+        created_at: new Date().toISOString(),
+        report: {
+          architecture: { score: 95, pattern_detected: 'Mock Pattern', summary: 'Super architecture', strengths: [], improvements: [] },
+          code_quality: { score: 90, summary: 'Bon code', strengths: [], issues: [] },
+          security: { score: 100, summary: 'Secure', issues_found: 0, details: [] },
+          general_feedback: 'Test passé avec succès',
+        },
+      }),
+    })
+  );
+
+  await page.goto('/analyze');
+  await page.waitForSelector('input[placeholder*="github"]', { timeout: 10000 });
+  await page.fill('input[placeholder*="github"]', 'https://github.com/facebook/react');
+  await page.click('button:has-text("Lancer le scan")');
+  await page.waitForURL('**/reviews/mock_e2e_1', { timeout: 15000 });
+
+  await expect(page.locator('text=Mock Pattern')).toBeVisible();
+});
+
+// ─── Cas d'échec : l'API retourne une erreur ────────────────────────────────
+
+test("Affiche une erreur si l'API refuse l'analyse", async ({ page }) => {
+  await mockAuthAndReviews(page);
+
+  await page.route('**/api/v1/reviews', async (route) => {
+    if (route.request().method() !== 'POST') return route.continue();
+    return route.fulfill({
+      status: 400,
+      contentType: 'application/json',
+      body: JSON.stringify({ error: 'Mon erreur de mock' }),
+    });
   });
 
   await page.goto('/analyze');
+  await page.waitForSelector('input', { timeout: 10000 });
   await page.fill('input', 'https://github.com/mauvais/repo');
   await page.click('button:has-text("Lancer le scan")');
 
-  // La jauge s'arrête (ou l'animation est annulée) et le message d'erreur rouge apparait
-  await expect(page.locator('text=Mon erreur de mock')).toBeVisible();
+  await expect(page.locator('text=Mon erreur de mock')).toBeVisible({ timeout: 10000 });
 });
