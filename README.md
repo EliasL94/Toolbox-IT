@@ -73,12 +73,23 @@ L'application est à présent disponible sur [http://localhost:3000](http://loca
 - **SQLite en production** : La base de données incluse `dev.db` est performante pour de petites instances / MVP. Pour un déploiement massif comportant beaucoup d'écritures concurrentes, il faudra modifier le `schema.prisma` pour cibler PostgreSQL.
 - **Stockage de code local** : L'analyseur clone ou extrait potentiellement de la donnée. Le backend nettoie sa mémoire, mais la supervision du poids du dossier cible est à envisager en exploitation longue.
 
-### 4.3 Contrôle Qualité (Développeurs)
-Avant chaque commit, il est vital de valider la santé du code :
+### 4.3 Contrôle Qualité & Qualimétrie (Développeurs)
+Avant chaque commit, il est vital de valider la santé stricte du code :
 ```bash
 npm run check
 ```
-*Cela déclenche le linter ESLint (qui traque la complexité cyclomatique, les variables asynchrones) et le vérificateur de types TypeScript.*
+
+*Ce script déclenche :*
+- Le **vérificateur de types TypeScript**, pour s'assurer que la manipulation des objets complexes (comme les retours JSON de Prisma) est strictement respectée sans jamais utiliser le typage `any`.
+- Le **linter ESLint**, configuré de façon draconienne pour punir la complexité cyclomatique et encourager l'atomisation en sous-composants dédiés (réalisé récemment sur les pages principales `dashboard` et `reviews`).
+
+#### Analyse Statique via SonarQube
+Outre nos exécutions ESLint locales, le projet est conçu pour s'intégrer avec **SonarQube**. SonarQube analyse la dette technique structurelle :
+- Suivi de la fiabilité et décrue des *Code Smells*.
+- Résolution proactive des *Security Hotspots*.
+- Couverture conditionnelle et maintien de *Quality Gates* draconiennes.
+
+*Les travaux massifs de nettoyage et de refonte des composants React (réduction drastique de profondeur) ont été réalisés pour conformer les Pull Requests aux plus hauts standards SonarQube.*
 
 ---
 
