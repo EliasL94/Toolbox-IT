@@ -1,3 +1,4 @@
+/** Route API — Analyse de dépôts GitHub via Gemini */
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
